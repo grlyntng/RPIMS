@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>  
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Administrator </title>
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/template.css' %}">
+</head>
+{% if user.is_authenticated %}
+    <!--if user == admin, else access denied-->
+    <body>
+        <div class="flex-container">
+            <div class="logo">
+                <a><img src="/static/images/logo.png" class="brand"></a>
+            </div>
+            <nav> 
+                <a href="{% url 'adminnotification' %}">DASHBOARD</a>
+                <a href="{% url 'branches' %}">BRANCHES</a>
+                <a href="{% url 'roles' %}">ROLES</a>
+                <a href="">INVENTORIES</a>
+                <a href="">CALENDARS</a>          
+            </nav>
+            
+            <div class="user-dropdown">
+                Hello, {{ user }} <!--Identifies which is the current user logged in-->
+                <button class="dropbutton">
+                    <img src="/static/images/user-icon.png" class="usericon">
+                </button>
+                <div class="dropdown-content">
+                    <a href="{% url 'logout'%}">Log Out</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+
+    {% block content %}{% endblock %}
+
+
+    <script src="{% static 'adminview/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'adminview/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'adminview/scripts/respond.js' %}"></script>
+
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>    

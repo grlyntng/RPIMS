@@ -1,0 +1,60 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "ASSISTANT" %}
+
+        <!-- INSERT SEARCH BAR HERE-->
+        <div class="topbar">
+            <form class="searchpatients"  method=POST action="{% url 'searchsupplier' %}">
+                {% csrf_token %}
+                <input type="search" placeholder="Search Suppliers"  name="searched">
+                <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+            </form>
+            <a class="addmedrecord" href="{% url 'addsupplier' %}">Add New Supplier</a>
+        </div>
+
+        
+        <!-- INSERT TABLE OF SUPPLIERS HERE-->
+        <table class="style2">
+            <tr style="font-weight: bold;" class="style2">
+                <th class="style2">ID</th>
+                <th class="style2">SUPPLIER NAME</th>
+                <th class="style2">RATING</th>
+                <th class="style2">PHONE</th>
+                <th class="style2">EMAIL</th>
+                <th class="style2">DESCRIPTION</th>
+                <th class="style2">BRANCH</th>
+            </tr>
+            {% for x in mysuppliers %}
+                {% if x.branch == user.branch%}
+                    <tr class="style2">
+                        <td class="style2">SUP{{x.id}}</td>
+                        <td class="style2"><a href="{% url 'editsupplier' x.id %}">{{x.Supplier_Name}}</a></td>
+                        <td class="style2">{{x.Supplier_Rating}}</td>
+                        <td class="style2">{{x.Supplier_Phone}}</td>
+                        <td class="style2">{{x.Supplier_Email}}</td>
+                        <td class="style2">{{x.Supplier_Description}}</td>
+                        <td class="style2">{{x.branch}}</td>
+                        
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be logged in as an ASSISTANT to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

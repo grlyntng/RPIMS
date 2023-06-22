@@ -1,0 +1,61 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+
+    <body>
+        {% if submitted %}
+            Successfully updated
+            <br><br>
+        {% else %}
+            <form action="" method=POST>
+                {%csrf_token%}
+
+                <div class="viewcontent"> 
+                    <table>
+                        <tr>
+                            <td class="view" style="font-weight:bold;">BRANCH NAME:</td>
+                            <td class="view"> {{ branch_to_edit.Branch_Name }}</td>
+                            <td class="view" style="font-weight:bold;"> STATE:</td>
+                            <td class="view"> {{ branch_to_edit.Branch_state }}</td>
+                        </tr>
+                        <tr>
+                            <td class="view" style="font-weight:bold;">  BRANCH ID:</td>
+                            <td class="view" > B{{ branch_to_edit.id }}</td>
+                        </tr>
+                        <tr>
+                            <td class="view" style="font-weight:bold;"> PHONE NUM:</td>
+                            <td class="view"> 3180930281</td>
+                        </tr>
+                        <tr>
+                            <td class="view" style="font-weight:bold;" rowspan="4"> {{form3.as_p}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="changes">
+                    <input type="submit" value="CONFIRM CHANGES" valign="bottom" class="confirm-button">
+                    <a class="delete-btn" href="{% url 'deletebranch' branch_to_edit.id %}"> DELETE </a> 
+                </div>
+            </form>
+        {% endif %}
+        
+    </body>
+
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

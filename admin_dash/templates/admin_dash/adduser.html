@@ -1,0 +1,40 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+    <body>
+            {% if submitted %}
+                New User Added Successfully
+                <br><br>
+                <a href="{% url 'roles' %}" class="goback"> BACK TO ROLES </a>
+            {% else %}
+                <form action="" method=POST class="adduser">
+                    {%csrf_token%}
+                    {{form.as_p}}
+                    {% if messages %}
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    {% endif %}
+                    <input type="submit" value="ADD NEW USER" valign="bottom" class="user-button">
+                </form>
+            {% endif %}
+    </body>
+
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

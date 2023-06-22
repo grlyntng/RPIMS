@@ -1,0 +1,35 @@
+from django.forms import ModelForm 
+from django import forms 
+from .models import Branch_Location
+
+
+class addbranchform(ModelForm):
+    class Meta:
+        model = Branch_Location
+        fields = (
+            'Branch_Name',
+            'Branch_address',
+            'Branch_state',
+            #'Branch_phonenumber',idk why this won't register
+        )
+        labels = {
+            'Branch_address':'ADDRESS',
+            'Branch_state':'STATE',
+        }
+
+class editbranchform(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(editbranchform, self).__init__(*args, **kwargs)
+
+        for fieldname in ['Branch_address']:
+            self.fields[fieldname].help_text = None
+
+    class Meta:
+        model = Branch_Location
+        fields = (
+            #phone num,
+            'Branch_address',
+        )
+        labels = {
+            'Branch_address':'ADDRESS',
+        }

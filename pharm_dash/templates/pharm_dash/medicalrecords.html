@@ -1,0 +1,57 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "PHARMACIST" %}
+    This is where the medical records for the selected patient will show <br>
+
+    <div>
+        <a>
+            <img src="/static/images/folder.png"> 
+            MEDICAL RECORD: 
+            {{patient_viewed.Patient_Name}} - {{patient_viewed.id}}
+            - {{patient_viewed.branch}} 
+            
+        </a>
+        
+    </div>
+
+     <!-- INSERT TABLE OF MEDICAL RECORDS HERE-->
+     <table class="style2">
+        <tr style="font-weight: bold;" class="style2">
+            <th class="style2">RECORD ID</th>
+            <th class="style2">DATE</th>
+            <th class="style2">DIAGNOSIS</th>
+            <th class="style2">TREATMENT</th>
+            <th class="style2">Patient</th>
+        </tr>
+        {% for x in  medicalrecords %}
+            {% if x.patient == patient_viewed.Patient_Name%} <!--WhY DOESNT PATIENT NAME WORK?-->
+                <tr class="style2">
+                    <td class="style2">{{x.id}}</td>
+                    <td class="style2">{{x.Examination_Date}}</td>
+                    <td class="style2">{{x.Diagnosis}}</td>
+                    <td class="style2">{{x.Treatment}}</td>
+                    <td class="style2">{{x.patient}}</td>
+                </tr>
+            {% endif %}
+    {% endfor %}
+        
+    </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

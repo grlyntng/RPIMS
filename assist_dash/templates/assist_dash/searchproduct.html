@@ -1,0 +1,71 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "ASSISTANT" %}
+
+        <!-- INSERT SEARCH BAR HERE-->
+        <div class="topbar">
+            <a>CATEGORY: ALL</a>
+            <a>SORT BY: ALL</a>
+            <form class="searchpatients"  method=POST action="{% url 'searchproduct' %}">
+                {% csrf_token %}
+                <input type="search" placeholder="Search Inventory"  name="searched">
+                <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+            </form>
+            
+        </div>
+
+        {% if searched %}
+            <h1>You searched for {{searched}}</h1>
+        {% endif %}
+        
+        <!-- INSERT INVENTORY TABLE HERE-->
+        <table class="style2">
+            <tr style="font-weight: bold;" class="style2">
+                <th class="style2">ID</th>
+                <th class="style2">FORM</th>
+                <th class="style2">UNIT DOSE</th>
+                <th class="style2">BRAND</th>
+                <th class="style2">NAME</th>
+                <th class="style2">PRICE</th>
+                <th class="style2">EXPIRY DATE</th>
+                <th class="style2">QTY</th>
+                <th class="style2">BRANCH</th>
+                <th class="style2"></th>
+            </tr>
+            {% for x in products %}
+                {% if x.branch == user.branch%}
+                    <tr class="style2">
+                        <td class="style2">PD{{x.id}}</td>
+                        <td class="style2">{{x.Form}}</td>
+                        <td class="style2">{{x.Unit_Dose}}</td>
+                        <td class="style2">{{x.Brand}}</td>
+                        <td class="style2">{{x.Product_Name}}</td>
+                        <td class="style2">{{x.Product_Price}}</td>
+                        <td class="style2">{{x.Product_Expirydate}}</td>
+                        <td class="style2">{{x.Product_Quantity}}</td>
+                        <td class="style2">{{x.branch}}</td>
+                        <td class="style2"> barcode button </td>
+                        
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be logged in as an ASSISTANT to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

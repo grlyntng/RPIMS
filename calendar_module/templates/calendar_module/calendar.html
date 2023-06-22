@@ -1,0 +1,62 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "ASSISTANT" %}
+    <table class="style1">
+        <tr style="font-weight: bold; background-color: #bae8e8;">
+            <th>date-time start</th>
+            <th>date-time start</th>
+            <th>Detail</th>
+            <th>Branch</th>
+        </tr>
+            {% for x in myappointments %}
+                {% if x.branch == user.branch%}
+                    <tr>
+                    <td>{{x.datetime_start}}</td>
+                    <td>{{x.datetime_end}}</td>
+                    <td>{{x.app_detail}}</td>
+                    <td>{{x.branch}}</td>
+                    <tr>
+                {% endif %}
+            {% endfor %}
+
+    </table>
+
+    {% elif user.role == "PHARMACIST" %}
+    <table>
+        <tr style="font-weight: bold; background-color: #bae8e8;">
+            <th>date-time start</th>
+            <th>date-time start</th>
+            <th>Detail</th>
+            <th>Branch</th>
+        </tr>
+            {% for x in myappointments %}
+                {% if x.branch == user.branch%}
+                    <tr>
+                    <td>{{x.datetime_start}}</td>
+                    <td>{{x.datetime_end}}</td>
+                    <td>{{x.app_detail}}</td>
+                    <td>{{x.branch}}</td>
+                    <tr>
+                {% endif %}
+            {% endfor %}
+
+    </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be logged in as an ASSISTANT or PHARMACIST to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

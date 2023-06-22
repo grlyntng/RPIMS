@@ -1,0 +1,38 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    {% if user.role == "ASSISTANT" %}
+
+    <body>
+        {{user.branch}}
+        {% if submitted %}
+            New Supplier Added Successfully
+            <br><br>
+            <a href="{% url 'suppliers' %}" class="goback"> BACK TO Suppliers </a>
+        {% else %}
+            <form action="" method=POST class="addsupplier">
+                {%csrf_token%}
+                {{form.as_p}}
+            
+                <input type="submit" value="ADD NEW SUPPLIER" valign="bottom" class="user-button">
+            </form>
+        {% endif %}
+    </body
+
+    {% else %}
+    <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

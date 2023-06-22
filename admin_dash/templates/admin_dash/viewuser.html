@@ -1,0 +1,51 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+
+
+    <body>
+        <div class="viewcontent"> 
+            <table>
+                <tr>
+                    <td class="view" style="font-weight:bold;"> USERNAME:</td>
+                    <td class="view"> {{ user_viewed.username }}</td>
+                    <td class="view" style="font-weight:bold;"> BRANCH:</td>
+                    <td class="view"> {{ user_viewed.branch }}</td>
+                </tr>
+                <tr>
+                    <td class="view" style="font-weight:bold;"> USER ID</td>
+                    <td class="view" > USER{{ user_viewed.id }}</td>
+                    <td class="view" style="font-weight:bold;"> ROLE:</td>
+                    <td class="view"> {{ user_viewed.role }}</td>
+                </tr>
+                <tr>
+                    <td class="view" style="font-weight:bold;"> EMAIL:</td>
+                    <td class="view"> {{ user_viewed.email }}</td>
+                </tr>
+            </table>
+        </div>
+        {% if user_viewed.role != "ADMIN"%}
+            <div class="changes">
+                <a class="delete-btn" href="{% url 'deleteuser' user_viewed.id %}"> DELETE </a>
+            </div>
+        {% endif %}
+    </body>
+
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

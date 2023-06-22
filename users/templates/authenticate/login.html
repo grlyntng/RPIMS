@@ -1,0 +1,33 @@
+
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+<div class="loginform">
+    <form action="" method=POST>
+        {% csrf_token %}
+
+        <div class="formhead">
+            <a><img src="static/images/logo.png" width="100px" height="100px"></a>
+            <h1>SIGN IN</h1>
+        </div>
+        
+        <input type="text" name="username" placeholder="Enter your username"><br>
+        <br>    
+        <input type="password" name="password" placeholder="Enter your password"><br>
+        <br>        
+        
+        <input type="submit" value="LOGIN" class='button'>
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+    </form>
+</div>
+
+
+{% endblock %}

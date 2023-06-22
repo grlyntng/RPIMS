@@ -1,0 +1,69 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "ASSISTANT" %}
+
+        <!-- INSERT SEARCH BAR HERE-->
+        <div class="topbar">
+            <form class="searchpatients"  method=POST action="{% url 'searchorder' %}">
+                {% csrf_token %}
+                <input type="search" placeholder="Search Orders"  name="searched">
+                <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+            </form>
+            <a class="addmedrecord">SORT BY: OLDER</a>
+        </div>
+
+
+        {% if searched %}
+            <h1>You searched for {{searched}}</h1>
+        {% endif %}
+
+        
+        <!-- INSERT TABLE OF SUPPLIERS HERE-->
+        <table class="style2">
+            <tr style="font-weight: bold;" class="style2">
+                <th class="style2">ID</th>
+                <th class="style2">SUPPLIER ID</th>
+                <th class="style2">NAME</th>
+                <th class="style2">QTY</th>
+                <th class="style2">TOTAL $</th>
+                <th class="style2">DATE</th>
+                <th class="style2">STATUS</th>
+                <th class="style2">BRANCH</th>
+                <th class="style2"></th>
+            </tr>
+            {% for x in orders %}
+                {% if x.branch == user.branch%}
+                    <tr class="style2">
+                        <td class="style2">SUP{{x.id}}</td>
+                        <td class="style2">{{x.supplier}}</td>
+                        <td class="style2">{{x.Order_Name}}</td>
+                        <td class="style2">{{x.Order_Quantity}}</td>
+                        <td class="style2">{{x.Order_Total}}</td>
+                        <td class="style2">{{x.Order_Date}}</td>
+                        <td class="style2">{{x.Order_Status}}</td>
+                        <td class="style2">{{x.branch}}</td>
+                        <td class="style2"> edit button </td>
+                        
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be logged in as an ASSISTANT to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

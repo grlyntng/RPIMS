@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "rpims_webapp/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "rpims_webapp/wsgi.py"
+      }
+    ]
+}

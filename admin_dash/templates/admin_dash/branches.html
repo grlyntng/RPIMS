@@ -1,0 +1,46 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <!--if user == admin, else access denied-->
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+
+
+    <body>
+        <div class="content">
+            <p style="font-weight: bold;">&nbsp;&nbsp;EXISTING BRANCHES</p>
+            <table class="style1">
+                <tr style="font-weight: bold; background-color: #bae8e8;">
+                    <th class="style1">BRANCH ID</th>
+                    <th class="style1">BRANCH NAME</th>
+                    <th class="style1">ADDRESS</th>
+                </tr>
+                    {% for x in mybranches %}
+                    <tr class="style1">
+                        <td class="style1"><a href="{% url 'viewbranch' x.id %}" style="color: black; text-decoration: none;">B{{x.id}}</a></td>
+                        <td class="style1"><a href="{% url 'viewbranch' x.id %}" style="color: black; text-decoration: none;">{{x.Branch_Name}}</a></td>
+                        <td class="style1"><a href="{% url 'viewbranch' x.id %}" style="color: black; text-decoration: none;">{{x.Branch_address}}</a></td>
+                    </tr>
+                    {% endfor %}
+    
+            </table>
+            <br>
+            <a class="add" href="{% url 'addbranch' %}">ADD NEW BRANCH</a>
+        </div>
+    </body>
+
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

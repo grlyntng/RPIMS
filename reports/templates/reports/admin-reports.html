@@ -1,0 +1,31 @@
+{% extends "admin_dash/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    {% if user.is_authenticated%}
+        
+    <body>
+            <div id="category">
+                <a href="{% url 'adminnotification' %}"> NOTIFICATIONS</a>
+                <a href="{% url 'adminreports' %}" > REPORTS</a>   
+            </div>
+
+
+            <div id="SALES-REPORTS">
+                {{output}}
+            </div>
+        
+
+
+    <body>
+
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

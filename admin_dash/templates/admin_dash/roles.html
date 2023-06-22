@@ -1,0 +1,48 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <!--if user == admin, else access denied-->
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+
+
+    <body>
+        <div class="content">
+            <p style="font-weight: bold;">&nbsp;&nbsp;EXISTING USERS</p>
+            <table class="style1">
+                <tr style="font-weight: bold; background-color: #bae8e8;">
+                    <th class="style1">USER ID</th>
+                    <th class="style1">USERNAME</th>
+                    <th class="style1">ROLE</th>
+                    <th class="style1">BRANCH</th>
+                </tr>
+                    {% for x in myusers %}
+                    <tr class="style1">
+                    <td class="style1"><a href="{% url 'viewuser' x.id %}" style="color: black; text-decoration: none;" >USER{{x.id}}</a></td>
+                    <td class="style1"><a href="{% url 'viewuser' x.id %}" style="color: black; text-decoration: none;" >{{x.username}}</a></td>
+                    <td class="style1"><a href="{% url 'viewuser' x.id %}" style="color: black; text-decoration: none;" >{{x.role}}</a></td>
+                    <td class="style1"><a href="{% url 'viewuser' x.id %}" style="color: black; text-decoration: none;" >{{x.branch}}</a></td>
+                    </tr>
+                    {% endfor %}
+    
+            </table>
+            <br>
+            <a class="add" href="{% url 'adduser' %}">ADD NEW USER</a>
+        </div>
+    </body>
+
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

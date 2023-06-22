@@ -1,0 +1,29 @@
+{% extends "calendar_module/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    {% if user.is_authenticated%}
+        
+            
+        <div id="category">
+            <a href="{% url 'pharmacistnotification' %}" style="font-weight=bold"> NOTIFICATIONS</a>
+            <a href="{% url 'pharmacistreports' %}"> REPORTS</a> 
+        </div>
+
+
+
+
+
+        
+
+
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,122 @@
+div.content{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left:15%;
+    
+    position:absolute;
+    top:35%;
+    left: 35%;
+    transform: translate(-50%, -50%); 
+    
+}
+
+
+table.style1{
+    
+    font-family: Arial, Helvetica, sans-serif;
+    width:800px;
+    border-collapse: collapse;
+    border-radius: 20px;
+}
+
+table.style2{
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    width:800px;
+    border-collapse: collapse;
+    border-radius: 20px;
+}
+
+th.style1{
+    padding:15px;
+    text-align: left;
+    border: 8px solid white;
+    background-color: #bae8e8;
+}
+td.style1{
+    padding:15px;
+    text-align: left;
+    border: 8px solid white;
+    background-color: #e3f6f5;
+}
+tr.style1:hover{
+    cursor: pointer;
+    background-color:  #ffd803;
+}
+
+th.style2{
+    padding:15px;
+    text-align: left;
+}
+
+tr.style2{
+    border-bottom: 1px solid;
+}
+td.style2{
+    padding:15px;
+    text-align: left;
+}
+
+tr.style2:hover{
+    cursor: pointer;
+    background-color:  #e5fafa;
+    
+}
+
+.add{
+    background-color:  #ffd803;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-left: 80%;
+    padding:10px;
+    font-weight: bold;
+    color: black;
+    font-size: small;
+    text-decoration: none;
+}
+
+.addmedrecord{
+    background-color:  #e5fafa;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-left: 80%;
+    padding:10px;
+    font-weight: bold;
+    color: black;
+    font-size: small;
+    text-decoration: none;
+}
+
+.addmedrecord:hover{
+    color:black;
+}
+
+.add:hover{
+    color:black;
+}
+
+img{
+    width:20px;
+    height:20px;
+}
+
+
+div.viewcontent{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left:15%;
+    font-size: x-large;
+    position:absolute;
+    top:40%;
+    left: 35%;
+    transform: translate(-50%, -50%); 
+    border-radius: 30px;
+    padding:40px;
+    background-color: #bae8e8;
+}
+
+td.view{
+    padding:15px;
+    white-space: nowrap;
+}
+

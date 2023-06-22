@@ -1,0 +1,62 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "PHARMACIST" %}
+
+        <!-- INSERT SEARCH BAR HERE-->
+        <div class="topbar">
+            <form class="searchpatients"  method=POST action="{% url 'searchpatient' %}">
+                {% csrf_token %}
+                <input type="search" placeholder="Search Patients"  name="searched">
+                <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+            </form>
+        </div>
+
+        {% if searched %}
+            <h1>You searched for {{searched}}</h1>
+        {% endif %}
+
+        <!-- INSERT TABLE OF PATIENTS HERE-->
+        <table class="style2">
+            <tr style="font-weight: bold;" class="style2">
+                <th class="style2">ID</th>
+                <th class="style2">PATIENT NAME</th>
+                <th class="style2">AGE</th>
+                <th class="style2">PHONE</th>
+                <th class="style2">BRANCH</th>
+                <th class="style2"></th>
+            </tr>
+      
+            {% for x in patients %}
+                {% if x.branch == user.branch%}
+                    <tr class="style2">
+                        <td class="style2">P{{x.id}}</td>
+                        <td class="style2">{{x.Patient_Name}}</td>
+                        <td class="style2">{{x.Age}}</td>
+                        <td class="style2">{{x.Phone}}</td>
+                        <td class="style2">{{x.branch}}</td>
+                        <td><a href="{% url 'medicalrecords' x.id %}"><img src="static/images/folder.png"></a></td>
+                        
+                    </tr>
+                {% endif %}
+            {% endfor %}
+ 
+        </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}
