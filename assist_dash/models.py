@@ -11,7 +11,6 @@ status_choices=(
 category_choices=(
     ("Supplement","Supplement"),
     ("Medication","Medication"), #add more later
-    ("default","default"),
 )
 
 brand_choices = (
@@ -48,14 +47,14 @@ class Supplier(models.Model):
     
 class Product(models.Model):
     #using the built in django id as pk
-    Product_Category = models.CharField(max_length=50, choices=category_choices,default="default")
+    Product_Category = models.CharField(max_length=50, choices=category_choices,default="Medication")
     Product_Name = models.CharField(max_length=100)
     Product_Expirydate = models.DateField(null=True)
-    Product_Barcode = models.TextField(max_length=16)
+    Product_Barcode = models.CharField(max_length=16)
     Product_Price = models.DecimalField(max_digits=1000, decimal_places=2,default = 1, validators=[ MinValueValidator(1)])
     Product_Quantity = models.IntegerField(default=1,validators=[ MinValueValidator(1)])
-    Unit_Dose = models.TextField(max_length=50)
-    Brand = models.CharField(max_length=50, choices=brand_choices,default="default")
+    Unit_Dose = models.CharField(max_length=50)
+    Brand = models.CharField(max_length=100)  # models.CharField(max_length=50, choices=brand_choices,default="default")
     Form = models.CharField(max_length=50, choices=form_choices,default="default")
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
 
@@ -65,10 +64,11 @@ class Product(models.Model):
 
 class Order_Stock(models.Model):
     #using the built in django id as pk
-    Order_Quantity = models.IntegerField(default = 1, validators=[MaxValueValidator(50), MinValueValidator(1)])
+    Order_Quantity = models.IntegerField(default = 1, validators=[MaxValueValidator(1000), MinValueValidator(1)])
     Order_Name = models.TextField(max_length=50)
     Order_Total = models.DecimalField(max_digits=1000, decimal_places=2,default = 1, validators=[ MinValueValidator(1)])
     Order_Date = models.DateField(null=True)
+    Order_Time = models.TimeField(null=True)
     Order_Status = models.CharField(max_length=50, choices=status_choices,default="In Progress")
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE,default="1")
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")

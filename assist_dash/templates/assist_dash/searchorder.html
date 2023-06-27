@@ -11,20 +11,32 @@
 
         <!-- INSERT SEARCH BAR HERE-->
         <div class="topbar">
+            
             <form class="searchpatients"  method=POST action="{% url 'searchorder' %}">
                 {% csrf_token %}
+                <label for="status">STATUS:</label>
+                <select name="status">
+                    <option value="all">ALL</option>
+                    <option value="In Progress">IN PROGRESS</option>
+                    <option value="Completed">COMPLETED</option>
+                    <option value="Cancelled">CANCELLED</option>
+                </select>
+
+                <label for="sortby">SORT BY:</label>
+                <select name="sortby">
+                    <option value="all">ALL</option>
+                    <option value="date-asc">DATE - newest</option>
+                    <option value="date-desc">DATE - oldest</option>
+                </select>
+                
                 <input type="search" placeholder="Search Orders"  name="searched">
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
             </form>
-            <a class="addmedrecord">SORT BY: OLDER</a>
+            
+            <a class="addmedrecord" href="{% url 'placeorder' %}">Place New Order</a>
         </div>
 
 
-        {% if searched %}
-            <h1>You searched for {{searched}}</h1>
-        {% endif %}
-
-        
         <!-- INSERT TABLE OF SUPPLIERS HERE-->
         <table class="style2">
             <tr style="font-weight: bold;" class="style2">

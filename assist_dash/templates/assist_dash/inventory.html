@@ -11,15 +11,34 @@
 
         <!-- INSERT SEARCH BAR HERE-->
         <div class="topbar">
-            <a>CATEGORY: ALL</a>
-            <a>SORT BY: ALL</a>
-            <a href="{% url 'addproduct' %}">ADD</a>
+            
             <form class="searchpatients"  method=POST action="{% url 'searchproduct' %}">
                 {% csrf_token %}
+                <!--CATEGORY-->
+                <label for="prod_cat">CATEGORY:</label>
+                <select name="prod_cat">
+                    <option value="all">ALL</option>
+                    <option value="supplements">SUPPLEMENTS</option>
+                    <option value="medicine">MEDICINE</option>
+                </select>
+                <!--SORT-->
+                <label for="prod_columns">SORT BY:</label>
+                <select name="prod_columns" id="prod_columns">
+                    <option value="name-asc">NAME - ascending</option>
+                    <option value="name-desc">NAME - descending</option>
+                    <option value="exp-date-asc">EXPIRATION DATE - near</option>
+                    <option value="exp-date-desc">EXPIRATION DATE - far</option>
+                    <option value="qty-asc">QUANTITY - ascending</option>
+                    <option value="qty-desc">QUANTITY - descending</option>
+                </select>
+
+                <!--SEARCH-->
                 <input type="search" placeholder="Search Inventory"  name="searched">
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
             </form>
-            
+
+            <!--ADD PRODUCT-->
+            <a href="{% url 'addproduct' %}">ADD</a>
         </div>
 
         

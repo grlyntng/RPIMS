@@ -59,5 +59,6 @@ def addpatient(request):
     form = addpatientform
     return render(request,'pharm_dash/addpatient.html', {'form':form, 'submitted':submitted})
 
-
+#add medical record
+#add to appointment
 

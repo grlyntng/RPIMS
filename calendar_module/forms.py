@@ -1,5 +1,5 @@
 from django.forms import ModelForm 
-from .widgets import DateTimePickerInput
+from .widgets import DatePickerInput,TimePickerInput
 from .models import Appointment
 
 class AppointmentForm(ModelForm):
@@ -7,12 +7,14 @@ class AppointmentForm(ModelForm):
         model = Appointment
         fields = (
             'app_detail',
-            'datetime_start',
-            'datetime_end',
+            'date',
+            'time_start',
+            'time_end',
             'branch',
         )
 
         widgets={
-            'datetime_start' : DateTimePickerInput(),
-            'datetime_end' : DateTimePickerInput(),
+            'date' : DatePickerInput(),
+            'time_start': TimePickerInput(),
+            'time_end': TimePickerInput(),
         }

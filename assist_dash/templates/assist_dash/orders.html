@@ -11,12 +11,28 @@
 
         <!-- INSERT SEARCH BAR HERE-->
         <div class="topbar">
+            
             <form class="searchpatients"  method=POST action="{% url 'searchorder' %}">
                 {% csrf_token %}
+                <label for="status">STATUS:</label>
+                <select name="status">
+                    <option value="all">ALL</option>
+                    <option value="In Progress">IN PROGRESS</option>
+                    <option value="Completed">COMPLETED</option>
+                    <option value="Cancelled">CANCELLED</option>
+                </select>
+
+                <label for="sortby">SORT BY:</label>
+                <select name="sortby">
+                    <option value="all">ALL</option>
+                    <option value="date-asc">DATE - newest</option>
+                    <option value="date-desc">DATE - oldest</option>
+                </select>
+                
                 <input type="search" placeholder="Search Orders"  name="searched">
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
             </form>
-            <a class="addmedrecord">SORT BY: OLDER</a>
+            
             <a class="addmedrecord" href="{% url 'placeorder' %}">Place New Order</a>
         </div>
 
@@ -30,6 +46,7 @@
                 <th class="style2">QTY</th>
                 <th class="style2">TOTAL $</th>
                 <th class="style2">DATE</th>
+                <th class="style2">TIME</th>
                 <th class="style2">STATUS</th>
                 <th class="style2">BRANCH</th>
                 <th class="style2"></th>
@@ -43,6 +60,7 @@
                         <td class="style2">{{x.Order_Quantity}}</td>
                         <td class="style2">{{x.Order_Total}}</td>
                         <td class="style2">{{x.Order_Date}}</td>
+                        <td class="style2">{{x.Order_Time}}</td>
                         <td class="style2">{{x.Order_Status}}</td>
                         <td class="style2">{{x.branch}}</td>
                         <td class="style2"> edit button </td>

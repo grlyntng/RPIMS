@@ -13,7 +13,7 @@ div.content{
 table.style1{
     
     font-family: Arial, Helvetica, sans-serif;
-    width:800px;
+    width: auto;
     border-collapse: collapse;
     border-radius: 20px;
 }
@@ -21,7 +21,7 @@ table.style1{
 table.style2{
     background-color: white;
     font-family: Arial, Helvetica, sans-serif;
-    width:800px;
+    width:auto;
     border-collapse: collapse;
     border-radius: 20px;
 }

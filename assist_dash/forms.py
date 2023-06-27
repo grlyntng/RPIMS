@@ -1,6 +1,8 @@
 from .models import Supplier, Order_Stock,Product
 from django.forms import ModelForm
-from .widgets import DatePickerInput
+from .widgets import DatePickerInput,TimePickerInput
+from django import forms
+
 
 class addsupplierform(ModelForm):
     class Meta:
@@ -32,14 +34,21 @@ class editsupplierform(ModelForm):
         )
 
 
-class placeorderform(ModelForm):
+class placeorderform(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['branch'].initial = user.branch #auto branch option to current branch
+        for field in self.fields.values():
+            field.help_text = ''
+
     class Meta:
         model = Order_Stock
         fields = (
             "Order_Quantity",
             "Order_Name",
             "Order_Total",
-            "Order_Date", #use widget
+            "Order_Date",
+            "Order_Time",
             "Order_Status",
             "supplier",
             "branch",
@@ -47,9 +56,16 @@ class placeorderform(ModelForm):
 
         widgets = {
             "Order_Date" : DatePickerInput(),
+            "Order_Time" : TimePickerInput(),
         }
 
-class addproductform(ModelForm):
+class addproductform(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['branch'].initial = user.branch #auto branch option to current branch
+        for field in self.fields.values():
+            field.help_text = ''
+
     class Meta:
         model = Product
         fields = (
