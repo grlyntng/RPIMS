@@ -1,38 +1,33 @@
 .loginform{
-    width:500px;
-    height:450px;
-    padding:20px;
-    border-radius: 20px;
+    width:50%;
+    height:100%;
     position:absolute;
-    top:55%;
-    left: 50%;
-    transform: translate(-50%, -60%); 
+    top:50%;
+    left: 75%;
+    transform: translate(-50%, -50%); 
     font-family: Arial, Helvetica, sans-serif;
     color: black;
-    background-color: #d9fbfb;
     overflow-y: hidden; /*disable scroll*/
     overflow-x: hidden; /*disable scroll*/
 }
 
 input{
-    width: 300px;
-    height: 40px;
-    position: absolute;
+    width: 80%;
+    height: 50px;
     right: 100px;
-    background-color: #ffffff;
-    border: none;
+    background-color: #bae8e8;
+    border: #bae8e8;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .button{
     background-color: #ffd803;
     width: 150px;
-    height: 50px;
+    height: auto;
     border-radius: 30px;
     border:none;
-    margin-top: 40px;
-    margin-left:70px;
-    position: absolute;
-    right: 170px;
+    font-weight: bolder;
     
 }
 
@@ -43,14 +38,20 @@ input{
 
 form{
     align-items: center;
-    margin-top: 30px;
+    margin-top: 50px;
     margin-left:110px;
 }
 
 .formhead{
-    margin-left:50px;
+    margin-left:-20px;
+    padding:20px;
 }
 
 h1{
     font-weight: bolder;
+}
+
+img {
+    width: 50%;
+    height: auto;
 }

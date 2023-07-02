@@ -18,9 +18,18 @@
                 <a><img src="/static/images/logo.png" class="brand"></a>
             </div>
             <nav> 
-                <a href="{% url 'adminnotification' %}">DASHBOARD</a>
-                <a href="{% url 'branches' %}">BRANCHES</a>
-                <a href="{% url 'roles' %}">ROLES</a>
+                {% url 'adminnotification' as adminnotification %}
+                <a{% if request.path == adminnotification %} class="active"{% endif %}
+                href="{{ adminnotification }}">DASHBOARD</a>
+                
+                {% url 'branches' as branches %}
+                <a{% if request.path == branches %} class="active"{% endif %}
+                href="{{ branches }}">BRANCHES</a> 
+
+                {% url 'roles' as roles %}
+                <a{% if request.path == roles %} class="active"{% endif %}
+                href="{{ roles }}">ROLES</a> 
+
                 <a href="">INVENTORIES</a>
                 <a href="">CALENDARS</a>          
             </nav>

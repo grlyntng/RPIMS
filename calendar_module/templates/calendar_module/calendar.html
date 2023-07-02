@@ -6,48 +6,84 @@
         {% load bootstrap5 %}
         {% bootstrap_css %}
         {% bootstrap_javascript %}
-        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
-    {% if user.role == "ASSISTANT" %}
-    <table class="style1">
-        <tr style="font-weight: bold; background-color: #bae8e8;">
-            <th>date-time start</th>
-            <th>date-time start</th>
-            <th>Detail</th>
-            <th>Branch</th>
-        </tr>
-            {% for x in myappointments %}
-                {% if x.branch == user.branch%}
-                    <tr>
-                    <td>{{x.datetime_start}}</td>
-                    <td>{{x.datetime_end}}</td>
-                    <td>{{x.app_detail}}</td>
-                    <td>{{x.branch}}</td>
-                    <tr>
-                {% endif %}
-            {% endfor %}
-
-    </table>
-
-    {% elif user.role == "PHARMACIST" %}
-    <table>
-        <tr style="font-weight: bold; background-color: #bae8e8;">
-            <th>date-time start</th>
-            <th>date-time start</th>
-            <th>Detail</th>
-            <th>Branch</th>
-        </tr>
-            {% for x in myappointments %}
-                {% if x.branch == user.branch%}
-                    <tr>
-                    <td>{{x.datetime_start}}</td>
-                    <td>{{x.datetime_end}}</td>
-                    <td>{{x.app_detail}}</td>
-                    <td>{{x.branch}}</td>
-                    <tr>
-                {% endif %}
-            {% endfor %}
-
-    </table>
+        <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+    {% if user.role != "ADMIN" %}
+    <head>
+        <title>Calendar</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+    
+            th, td {
+                border: 1px solid black;
+                padding: 10px;
+            }
+    
+            ul {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calendar-nav">
+            <select id="year-select">
+                {% for year_choice in year_choices %}
+                    <option value="{{ year_choice }}" {% if year_choice == year %}selected{% endif %}>{{ year_choice }}</option>
+                {% endfor %}
+            </select>
+            <select id="month-select">
+                {% for month_choice in month_choices %}
+                    <option value="{{ month_choice }}" {% if month_choice == month %}selected{% endif %}>{{ month_choice }}</option>
+                {% endfor %}
+            </select>
+            <button id="change-calendar-btn">Go</button>
+        </div>
+        <div class ="addapp">
+            <a href="{% url 'addappointment' %}">NEW</a>
+        </div>
+        <h1>{{ month }}/{{ year }}</h1>
+    
+        <table>
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for day in num_days %}
+                        {% if forloop.counter0|divisibleby:7 %}
+                            </tr><tr>
+                        {% endif %}
+                        <td>
+                            <b>{{ day }}</b> <br>
+                            {% for appointment in appointments %}
+                                {% if appointment.date.day == day %}
+                                    <li>{{ appointment.app_detail }} @ {{appointment.time_start}}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    
+    
+    </body>
+    <script>
+        document.getElementById("change-calendar-btn").addEventListener("click", function() {
+            var year = document.getElementById("year-select").value;
+            var month = document.getElementById("month-select").value;
+            window.location.href = "/calendar/" + year + "/" + month + "/";
+        });
+    </script>
 
 
     {% else %}

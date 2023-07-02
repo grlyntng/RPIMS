@@ -2,9 +2,12 @@
     float:left;
     width:10%;
     padding:20px;
-    margin-right:15px;
+    margin-right:20px;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: BOLD;
+}
+
+.active{
+    font-weight: bolder;
 }
 
 #notifications{
@@ -16,16 +19,15 @@
 }
 
 .notif-content{
-    margin:3px;
-    padding:5px;
-    text-decoration: none;
-    background-color: #bae8e8 ;
-    border-radius: 10px;
+    width: 100%;
+    border-collapse: collapse;
 }
 
-#unread-notif{
-    background-color: #bae8e8 ;
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
 }
+
 
 .dash{
     display:flex;
@@ -82,12 +84,11 @@
 button:hover:not(.active,.logo) {
     font-weight: bold;
     color: black;
-  }
+}
 
 a:hover:not(.active,.logo) {
-    font-weight: bold;
-    color: black;
-  }
+    text-decoration: underline;
+}
 
 a{
     color:black;
@@ -95,7 +96,4 @@ a{
     padding:5px;
 }
 
-a:hover{
-    color:black;
-}
 

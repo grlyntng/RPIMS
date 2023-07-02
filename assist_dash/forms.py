@@ -5,6 +5,12 @@ from django import forms
 
 
 class addsupplierform(ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['branch'].initial = user.branch #auto branch option to current branch
+        for field in self.fields.values():
+            field.help_text = ''
+            
     class Meta:
         model = Supplier
         fields = (
@@ -49,7 +55,6 @@ class placeorderform(forms.ModelForm):
             "Order_Total",
             "Order_Date",
             "Order_Time",
-            "Order_Status",
             "supplier",
             "branch",
         )

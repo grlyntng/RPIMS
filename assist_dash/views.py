@@ -70,6 +70,14 @@ def placeorder(request):
             form3 = placeorderform(user=request.user, data=request.POST)
             if form3.is_valid():
                 form3.save() #save the Order_Stock object
+
+                #getting data from the form entry
+                appdetaildata = form3.cleaned_data.get('Order_Name') 
+                appdatedata = form3.cleaned_data.get('Order_Date')
+                apptimedata = form3.cleaned_data.get('Order_Time')
+
+                #creating a new object from form data in Appointment
+                Appointment.objects.create(app_detail = appdetaildata, date = appdatedata, time_start = apptimedata, branch = request.user.branch )
                 return HttpResponseRedirect('/placeorder?submitted=True')
         else:
             form3 = placeorderform(user=request.user)

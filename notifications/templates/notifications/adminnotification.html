@@ -1,0 +1,38 @@
+{% extends "admin_dash/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    {% if user.is_authenticated%}
+        
+            
+        <div id="category">
+            <a href="{% url 'adminnotification' %}"  class="active"> NOTIFICATIONS</a>
+            <a href="{% url 'adminreports' %}"> REPORTS</a>   
+        </div>
+
+        <div>
+        <table class="notif-content">
+            {% for x in notifications %}
+            <tr >
+                <td>{{x.branch}}</a> - 
+                    {% if x.Notification_Type == "Low Stock"%}
+                    <span style="color: blue;font-weight:bold;">{{x.Notification_Type}}</span>
+                    {% else %} 
+                    <span style="color: red; font-weight:bold;">{{x.Notification_Type}}</span>
+                    {% endif %}
+                    - {{x.Notification_Content}}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+        </div>
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

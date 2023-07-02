@@ -9,9 +9,8 @@ class Appointment(models.Model):
     app_detail = models.TextField(max_length=255, editable = True)
     date = models.DateField(null=True)
     time_start = models.TimeField(null=True)
-    time_end = models.TimeField(null=True)
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
-    order = models.ForeignKey(Order_Stock, on_delete=models.CASCADE, default = "1") #maybe delete?
+   
     def __str__(self):
         return self.app_detail
     

@@ -19,18 +19,41 @@
             </div>
             {% if user.role == "ASSISTANT" %}
                 <nav> 
-                    <a href="{% url 'assistantnotification'%}">DASHBOARD</a>
-                    <a href="{% url 'inventory'%}">INVENTORY</a>
-                    <a href="{% url 'orders'%}">ORDERS</a>
-                    <a href="{% url 'suppliers'%}">SUPPLIERS</a>
-                    <a href="{% url 'calendar'%}">CALENDAR</a>     
+                    {% url 'assistantnotification' as assistantnotification %}
+                    <a{% if request.path == assistantnotification %} class="active"{% endif %}
+                    href="{{ assistantnotification }}">DASHBOARD</a>
+
+                    {% url 'inventory' as inventory %}
+                    <a{% if request.path == inventory %} class="active"{% endif %}
+                    href="{{ inventory }}">INVENTORY</a>
+
+                    {% url 'orders' as orders %}
+                    <a{% if request.path == orders %} class="active"{% endif %}
+                    href="{{ orders }}">ORDERS</a>
+
+                    {% url 'suppliers' as suppliers %}
+                    <a{% if request.path == suppliers %} class="active"{% endif %}
+                    href="{{ suppliers }}">SUPPLIERS</a>
+                    
+                    {% url 'calendar' as calendar %}
+                    <a{% if request.path == calendar %} class="active"{% endif %}
+                    href="{{ calendar }}">CALENDAR</a>    
+
                     <a href="">CHECKOUT</a>       
                 </nav>
             {% elif user.role == "PHARMACIST" %}
                 <nav> 
-                    <a href="{% url 'pharmacistnotification' %}">DASHBOARD</a>
-                    <a href="{% url 'patientrecords' %}">PATIENT RECORDS</a>
-                    <a href="{% url 'calendar'%}">CALENDAR</a>       
+                    {% url 'pharmacistnotification' as pharmacistnotification %}
+                    <a{% if request.path == pharmacistnotification %} class="active"{% endif %}
+                    href="{{ pharmacistnotification }}">DASHBOARD</a>
+                    
+                    {% url 'patientrecords' as patientrecords %}
+                    <a{% if request.path == patientrecords %} class="active"{% endif %}
+                    href="{{ patientrecords }}">PATIENT RECORDS</a>
+                    
+                    {% url 'calendar' as calendar %}
+                    <a{% if request.path == calendar %} class="active"{% endif %}
+                    href="{{ calendar }}">CALENDAR</a>       
                 </nav>
             {% endif %}
             

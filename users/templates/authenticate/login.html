@@ -4,20 +4,24 @@
 {% load bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
+<body >
+<div class="decor">
+    <a><img src="static/images/loginscreen-left.png"></a>
+</div>
 <div class="loginform">
     <form action="" method=POST>
         {% csrf_token %}
 
         <div class="formhead">
-            <a><img src="static/images/logo.png" width="100px" height="100px"></a>
-            <h1>SIGN IN</h1>
+            <a><img src="static/images/loginscreen-right.png"></a>
         </div>
         
-        <input type="text" name="username" placeholder="Enter your username"><br>
+        <input type="text" name="username" placeholder=" Enter your username"><br>
         <br>    
-        <input type="password" name="password" placeholder="Enter your password"><br>
+        <input type="password" name="password" placeholder=" Enter your password"><br>
         <br>        
         
         <input type="submit" value="LOGIN" class='button'>
@@ -28,6 +32,6 @@
         {% endif %}
     </form>
 </div>
-
+</body>
 
 {% endblock %}

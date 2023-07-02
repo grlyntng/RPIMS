@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+td {
+    width: 100px; /* Adjust the width value as needed */
+    height: 100px; /* Adjust the height value as needed */
+    text-align: left; /* Align the content in the center */
+    vertical-align: middle; /* Vertically align the content in the middle */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.calendar-nav {
+    margin-bottom: 20px;
+}
+
+.calendar-nav select {
+    font-size: 16px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.calendar-nav button {
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.day-cell {
+    position: relative;
+    min-height: 100px;
+    padding: 10px;
+}
+
+
+.appointment {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fce8b2;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.appointment span {
+    font-size: 12px;
+    font-weight: bold;
+}

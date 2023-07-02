@@ -6,27 +6,32 @@
         {% load bootstrap5 %}
         {% bootstrap_css %}
         {% bootstrap_javascript %}
-        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
-    {% if user.role == "ASSISTANT" %}
-
+        <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+    {% if user.role != "ADMIN" %}
+    <head>
+        <title>Add Appointment</title>
+    </head>
     <body>
         {{user.branch}}
         {% if submitted %}
-            New Order Placed Successfully
+            New Appointment Added Successfully
             <br><br>
-            <a href="{% url 'orders' %}" class="goback"> BACK TO ORDERS </a>
+            <a href="{% url 'calendar' %}" class="goback"> BACK TO CALENDAR</a>
         {% else %}
-            <form action="" method=POST class="addsupplier">
+            <form action="" method=POST class="addappointment">
                 {%csrf_token%}
                 {{form.as_p}}
             
-                <input type="submit" value="PLACE NEW ORDER" valign="bottom" class="user-button">
+                <input type="submit" value="ADD NEW APPOINTMENT" valign="bottom" class="user-button">
             </form>
         {% endif %}
+    
+    
     </body>
 
+
     {% else %}
-    <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>
+    <h1>Sorry, you must be logged in as an ASSISTANT or PHARMACIST to view this page.</h1>
     <a href="{% url 'login_user' %}"> LOG IN NOW</a>
     {% endif %}
 

@@ -3,6 +3,11 @@ from .widgets import DatePickerInput
 from .models import Patient, Medical_Record
 
 class addpatientform(ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['branch'].initial = user.branch #auto branch option to current branch
+        for field in self.fields.values():
+            field.help_text = ''
     class Meta:
         model = Patient
         fields = (
@@ -20,6 +25,12 @@ class addpatientform(ModelForm):
         }
 
 class addmedicalrecordform(ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['branch'].initial = user.branch #auto branch option to current branch
+        for field in self.fields.values():
+            field.help_text = ''
+            
     model=Medical_Record
     fields = (
         'Examination_date',
