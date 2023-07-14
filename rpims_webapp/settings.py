@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', #for heroku
-    'rpims_webapp.favicon_middleware.FaviconMiddleware'
+    
 ]
 
 ROOT_URLCONF = 'rpims_webapp.urls'
