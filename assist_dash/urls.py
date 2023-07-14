@@ -10,9 +10,16 @@ urlpatterns = [
 
     path('orders', views.orders, name="orders"),
     path('placeorder', views.placeorder, name="placeorder"),
-    path('searchorder', views.searchorder, name="searchorder"),
+    path('searchorder/', views.searchorder, name="searchorder"),
+    path('vieworder/<id>', views.vieworder, name="vieworder"),
+
 
     path('inventory', views.inventory, name="inventory"),
     path('addproduct', views.addproduct, name="addproduct"),
     path('searchproduct', views.searchproduct, name="searchproduct"),
+
+    path('checkout/', views.checkout, name="checkout"),
+    path('order_confirmation/<int:sale_id>/', views.order_confirmation, name='order_confirmation'),
 ]
+
+

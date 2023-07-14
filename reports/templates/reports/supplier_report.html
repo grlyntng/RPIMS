@@ -1,0 +1,94 @@
+{% extends "calendar_module/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    {% if user.is_authenticated%}
+        
+            
+            <div id="category">
+                <a href="{% url 'pharmacistnotification' %}" > NOTIFICATIONS</a>
+                <a href="{% url 'pharmacistreports' %}" class="active"> REPORTS</a> 
+            </div>
+
+
+            <div class="report">
+                <div class="report_container">
+                    <div class="report_type">
+                        
+                    <a class="tab" href="{% url 'pharmacistreports' %}">WASTE REPORTS</a>
+                    <a class="tab" href="{% url 'salesreports' %}">SALES REPORTS</a>
+                    <a class="tab" href="{% url 'inventoryreports' %}">INVENTORY REPORTS</a>
+                    <a class="activetab" href="{% url 'supplierreports' %}">SUPPLIER REPORTS</a>
+                    </div>
+                    <br>
+                    <div class="filterbar">
+                        <form method="get" action="{% url 'supplierreports' %}">
+                            <label for="report-type">Select Report Type:</label>
+                            <select name="report_type" id="report-type">
+                                <option value="daily" {% if report_type == 'daily' %}selected{% endif %}>Daily</option>
+                                <option value="monthly" {% if report_type == 'monthly' %}selected{% endif %}>Monthly</option>
+                                <option value="annual" {% if report_type == 'annual' %}selected{% endif %}>Annual</option>
+                            </select>
+                            <button type="submit">Generate Report</button>
+                        </form>
+                    </div>
+                </div>
+
+                <br>
+                <h1>Supplier Report</h1>
+
+                    <h2>Supplier Rating Summaries</h2>
+                    <ul>
+                        {% for rating in supplier_ratings %}
+                            <li>Rating: {{ rating.Supplier_Rating }} - Count: {{ rating.total }}</li>
+                        {% empty %}
+                            <li>No supplier ratings found.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h2>Number of Suppliers in Branch</h2>
+                    <p>Total Suppliers: {{ supplier_count }}</p>
+
+                    <h2>Order Summaries</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Supplier</th>
+                                <th>Total Orders</th>
+                                <th>Total Quantity</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for summary in order_summaries %}
+                                <tr>
+                                    <td>{{ summary.supplier }}</td>
+                                    <td>{{ summary.total_orders }}</td>
+                                    <td>{{ summary.total_quantity }}</td>
+                                    <td>{{ summary.total_amount }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">No order summaries found.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                
+            </div>
+
+            
+
+        
+
+
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

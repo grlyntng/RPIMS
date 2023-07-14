@@ -23,6 +23,17 @@ class addsupplierform(ModelForm):
         )
 
 
+class editorderform(ModelForm):
+    
+    class Meta:
+        model = Order_Stock
+        fields = (
+            'Order_Status',
+        )
+        labels = {
+            'Order_Status':'STATUS',
+        }
+
 class editsupplierform(ModelForm):
     def __init__(self, *args, **kwargs):
         super(editsupplierform, self).__init__(*args, **kwargs)
@@ -64,12 +75,33 @@ class placeorderform(forms.ModelForm):
             "Order_Time" : TimePickerInput(),
         }
 
+from .barcode_utils import generate_ean13_barcode
+from random import randint
+
 class addproductform(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['branch'].initial = user.branch #auto branch option to current branch
         for field in self.fields.values():
             field.help_text = ''
+
+    def generate_unique_barcode(self):
+        while True:
+            Product_Barcode= str(randint(1000000000000, 9999999999999))
+            if not Product.objects.filter(Product_Barcode=Product_Barcode).exists():
+                return Product_Barcode
+    def save(self, commit=True):
+        product = super().save(commit=False)
+        product.Product_Barcode = self.generate_unique_barcode()
+        
+        if commit:
+            product.save()
+
+        # Generate and save the barcode image
+        output_path = f"static/barcodes/{product.Product_Barcode}"
+        generate_ean13_barcode(product.Product_Barcode, output_path)
+        product.save()
+        return product
 
     class Meta:
         model = Product
@@ -78,7 +110,6 @@ class addproductform(forms.ModelForm):
             "Brand",
             "Product_Price",
             "Unit_Dose",
-            "Product_Barcode",
             "Product_Category",
             "Form",
             "Product_Quantity",
@@ -91,7 +122,6 @@ class addproductform(forms.ModelForm):
             "Brand": "BRAND",
             "Product_Price" : "PRICE",
             "Unit_Dose": "UNIT DOSE",
-            "Product_Barcode":"BARCODE",
             "Product_Category": "CATEGORY",
             "Form":"FORM",
             "Product_Quantity":"QUANTITY",

@@ -1,0 +1,67 @@
+{% extends "calendar_module/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    {% if user.is_authenticated%}
+        
+            
+            <div id="category">
+                <a href="{% url 'pharmacistnotification' %}" > NOTIFICATIONS</a>
+                <a href="{% url 'pharmacistreports' %}" class="active"> REPORTS</a> 
+            </div>
+
+
+            <div class="report">
+                <div class="report_container">
+                    <div class="report_type">
+                        
+                        <a class="tab" href="{% url 'pharmacistreports' %}">WASTE REPORTS</a>
+                        <a class="activetab" href="{% url 'salesreports' %}">SALES REPORTS</a>
+                        <a class="tab" href="{% url 'inventoryreports' %}">INVENTORY REPORTS</a>
+                        <a class="tab" href="{% url 'supplierreports' %}">SUPPLIER REPORTS</a>
+                    </div>
+                    <br>
+                    <div class="filterbar">
+                        <form method="get" action="{% url 'salesreports' %}">
+                            <label for="report-type">Select Report Type:</label>
+                            <select name="date_range">
+                                <option value="1_month">1 Month</option>
+                                <option value="3_months">3 Months</option>
+                                <option value="6_months">6 Months</option>
+                                <option value="12_months">12 Months</option>
+                              </select>
+                            <button type="submit">Generate Report</button>
+                        </form>
+                    </div>
+                </div>
+
+                <br>
+                <h1>Sale Report</h1>
+                
+                <h1>Sales Prediction</h1>
+                <h3>Date Range: {{ date_range }}</h3>
+                    <h3>ARIMA Predictions</h3>
+                    <ul>
+                    {% for prediction in arima_predictions %}
+                        <li>{{ prediction }}</li>
+                    {% endfor %}
+                    </ul>
+
+                    
+            </div>
+
+            
+
+        
+
+
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

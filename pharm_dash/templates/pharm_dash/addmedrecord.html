@@ -1,0 +1,38 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    {% if user.role == "PHARMACIST" %}
+
+    <div class="addpatientpage">
+        <h3>ADD NEW RECORD - {{user.branch}} - #{{patient_viewed.id}} </h3>
+        {% if submitted %}
+            New Medical Record Added Successfully
+            <br><br>
+            <a href="{% url 'patientrecords' %}" class="goback"> BACK TO PATIENT RECORDS </a>
+        {% else %}
+            <form action="" method=POST class="addnewpatient">
+                {%csrf_token%}
+                {{form.as_p}}
+                
+                <input type="submit" value="ADD NEW RECORD" valign="bottom" class="addnewpatientbutton">
+            </form>
+        {% endif %}
+    </div>
+
+    {% else %}
+    <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

@@ -28,3 +28,5 @@ urlpatterns = [
     path('', include('reports.urls')),
     path('', include('notifications.urls')),
 ]
+
+

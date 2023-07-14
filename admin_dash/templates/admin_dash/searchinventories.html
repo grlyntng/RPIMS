@@ -1,0 +1,101 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+
+   
+    <div class="topbar">
+        <h1>INVENTORIES</h1><br>
+        <form class="searchinventories"  method=POST action="{% url 'searchinventories' %}">
+            {% csrf_token %}
+
+            <!-- BRANCH -->
+            <label for="branch">BRANCH:</label>
+            <select name="branch" id="branch">
+                <option value="all">All Branches</option>
+                {% for x in mybranches %}
+                    <option value="{{x.Branch_Name }}">{{ x.Branch_Name }}</option>
+                {% endfor %}
+            </select>
+
+            <!--CATEGORY-->
+            <label for="prod_cat">CATEGORY:</label>
+            <select name="prod_cat">
+                <option value="all">ALL</option>
+                <option value="Supplement">Supplement</option>
+                <option value="Prescription Medication">Prescription Medication</option>
+                <option value="OTC Medication">OTC Medication</option>
+                <option value="Personal Care and Hygiene Products">Personal Care and Hygiene Products</option>
+                <option value="First Aid and Medical Supplies">First Aid and Medical Supplies</option>
+                <option value="Baby Care Products">Baby Care Products</option>
+                <option value="Mobility Aids">Mobility Aids</option>
+                <option value="Oral Health">Oral Health</option>
+                <option value="Eye and Ear Care">Eye and Ear Care</option>
+                <option value="Diagnostic Tests and Medical Devices">Diagnostic Tests and Medical Devices</option>
+                <option value="Others">Others</option>
+            </select>
+            <!--SORT-->
+            <label for="prod_columns">SORT BY:</label>
+            <select name="prod_columns" id="prod_columns">
+                <option value="name-asc">NAME - ascending</option>
+                <option value="name-desc">NAME - descending</option>
+                <option value="exp-date-asc">EXPIRATION DATE - near</option>
+                <option value="exp-date-desc">EXPIRATION DATE - far</option>
+                <option value="qty-asc">QUANTITY - ascending</option>
+                <option value="qty-desc">QUANTITY - descending</option>
+            </select>
+
+            <!--SEARCH-->
+            <input type="search" placeholder="Search Inventory"  name="searched">
+            <input type="submit" value="ENTER" valign="bottom" class="searchbutton">
+            <!--ADD PRODUCT-->
+            <a href="{% url 'addproduct' %}" class="addproduct">ADD</a>
+        </form>
+    </div>
+
+    <br>
+    <!-- INSERT INVENTORY TABLE HERE-->
+    <table class="style2">
+        <tr style="font-weight: bold;" class="style2">
+            <th class="style2">#</th>
+            <th class="style2">FORM</th>
+            <th class="style2">UNIT DOSE</th>
+            <th class="style2">BRAND</th>
+            <th class="style2">NAME</th>
+            <th class="style2">PRICE</th>
+            <th class="style2">EXPIRY DATE</th>
+            <th class="style2">QTY</th>
+            <th class="style2">BARCODE</th>
+        </tr>
+        {% for x in products %}
+                <tr class="style2">
+                    <td class="style2">{{forloop.counter}}</td>
+                    <td class="style2">{{x.Form}}</td>
+                    <td class="style2">{{x.Unit_Dose}}</td>
+                    <td class="style2">{{x.Brand}}</td>
+                    <td class="style2">{{x.Product_Name}}</td>
+                    <td class="style2">{{x.Product_Price}}</td>
+                    <td class="style2">{{x.Product_Expirydate}}</td>
+                    <td class="style2">{{x.Product_Quantity}}</td>
+                    <td class="style2"> <img src="/static/barcodes/{{ x.Product_Barcode }}.png" class="barcode" alt="Product Barcode"> </td>
+                </tr>
+        {% endfor %}
+    </table>
+
+
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

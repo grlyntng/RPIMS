@@ -24,21 +24,32 @@ class addpatientform(ModelForm):
             'branch':'BRANCH', 
         }
 
-class addmedicalrecordform(ModelForm):
+class addmedrecordform(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['branch'].initial = user.branch #auto branch option to current branch
+        self.fields['branch'].initial = user.branch
+        self.fields['patient'].queryset = Patient.objects.filter(branch=user.branch)
         for field in self.fields.values():
             field.help_text = ''
-            
-    model=Medical_Record
-    fields = (
-        'Examination_date',
-        'Diagnosis',
-        'Treatment',
-        'patient',
-    )
 
-    widgets={
-        'Examination_date':DatePickerInput(),
-    }
+    class Meta:        
+        model=Medical_Record
+        fields = (
+            'Examination_Date',
+            'Diagnosis',
+            'Treatment',
+            'patient',
+            'branch',
+        )
+
+        labels = {
+            'Examination_Date': 'EXAMINATION DATE',
+            'Diagnosis':'DIAGNOSIS',
+            'Treatment':'TREATMENT',
+            'patient':'PATIENT',
+            'branch':'BRANCH', 
+        }
+
+        widgets={
+            'Examination_Date':DatePickerInput(),
+        }

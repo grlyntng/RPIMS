@@ -10,12 +10,38 @@
         
             
         <div id="category">
-            <a href="{% url 'pharmacistnotification' %}" style="font-weight=bold"> NOTIFICATIONS</a>
+            <a href="{% url 'pharmacistnotification' %}" class="active"> NOTIFICATIONS</a>
             <a href="{% url 'pharmacistreports' %}"> REPORTS</a> 
         </div>
 
+        
 
-
+        <div class="noticontent">
+            <table class="notif-content">
+                {% for x in notifications reversed %} <!--reversed displays the newest-->
+                <tr >
+                    {% if x.branch == user.branch %}
+                    <td> 
+                        {% if x.Notification_Type == "Low Stock"%}
+                        <span style="color: blue;font-weight:bold;">{{x.Notification_Type}}</span>
+                        {% elif x.Notification_Type == "Expired"%}
+                        <span style="color: red;font-weight:bold;">{{x.Notification_Type}}</span>
+                        {% else %} 
+                        <span style="color: orange; font-weight:bold;">{{x.Notification_Type}}</span>
+                        {% endif %}
+                        - {{x.Notification_Content}}
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+    
+            </table>
+            <div class="insights">
+                <p class="insightcontent"><br><a style="margin-left:40%;font-weight:bold;">{{ items_sold_today }}</a><br><br><a style="margin-left:20%;">Items Sold Today</a></p>
+                 <br>
+                <p class="insightcontent"><br><a  style="margin-left:40%;font-weight:bold;">{{ products_in_inventory }}</a><br><br><a>Total Products in Inventory</a></p>
+            </div>
+        </div>
 
 
         

@@ -9,13 +9,14 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 
-    <body>
+    <div class="adduserpage">
+        <h3>ADD NEW USER </h3>
             {% if submitted %}
                 New User Added Successfully
                 <br><br>
                 <a href="{% url 'roles' %}" class="goback"> BACK TO ROLES </a>
             {% else %}
-                <form action="" method=POST class="adduser">
+                <form action="" method=POST class="addnewuser">
                     {%csrf_token%}
                     {{form.as_p}}
                     {% if messages %}
@@ -23,10 +24,10 @@
                             {{ message }}
                         {% endfor %}
                     {% endif %}
-                    <input type="submit" value="ADD NEW USER" valign="bottom" class="user-button">
+                    <input type="submit" value="ADD NEW USER" valign="bottom" class="addnewuserbutton">
                 </form>
             {% endif %}
-    </body>
+    </div>
 
     {% else %}
     <h1>Sorry, you must be an ADMIN to view this page.</h1>

@@ -17,16 +17,10 @@
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
             </form>
         </div>
-
-        {% if searched %}
-            <h1>You searched for {{searched}}</h1>
-        {% endif %}
-
-        
+        <br>
         <!-- INSERT TABLE OF SUPPLIERS HERE-->
         <table class="style2">
             <tr style="font-weight: bold;" class="style2">
-                <th class="style2">ID</th>
                 <th class="style2">SUPPLIER NAME</th>
                 <th class="style2">RATING</th>
                 <th class="style2">PHONE</th>
@@ -34,10 +28,9 @@
                 <th class="style2">DESCRIPTION</th>
                 <th class="style2">BRANCH</th>
             </tr>
-            {% for x in suppliers %}
+            {% for x in mysuppliers %}
                 {% if x.branch == user.branch%}
                     <tr class="style2">
-                        <td class="style2">SUP{{x.id}}</td>
                         <td class="style2">{{x.Supplier_Name}}</td>
                         <td class="style2">{{x.Supplier_Rating}}</td>
                         <td class="style2">{{x.Supplier_Phone}}</td>

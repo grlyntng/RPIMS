@@ -8,19 +8,18 @@
         {% bootstrap_javascript %}
         <link rel="stylesheet" href="{% static 'css/lists.css' %}">
     {% if user.role == "PHARMACIST" %}
-    This is where the medical records for the selected patient will show <br>
 
-    <div>
-        <a>
-            <img src="/static/images/folder.png"> 
+    <div class="bar">
+        <img src="/static/images/folder.png" style="width:40px;height20px;"> 
+        <h4><a>
+            &nbsp;
             MEDICAL RECORD: 
-            {{patient_viewed.Patient_Name}} - {{patient_viewed.id}}
-            - {{patient_viewed.branch}} 
+            {{patient_viewed.Patient_Name}} - {{patient_viewed.branch}} 
             
-        </a>
-        
+        </a></h4>
+        <a  href="{% url 'addmedrecord' patient_viewed.id %}" class="addrecordbutton">Add New Record</a>
     </div>
-
+    <br>
      <!-- INSERT TABLE OF MEDICAL RECORDS HERE-->
      <table class="style2">
         <tr style="font-weight: bold;" class="style2">
@@ -30,19 +29,19 @@
             <th class="style2">TREATMENT</th>
             <th class="style2">Patient</th>
         </tr>
-        {% for x in  medicalrecords %}
-            {% if x.patient == patient_viewed.Patient_Name%} <!--WhY DOESNT PATIENT NAME WORK?-->
+        {% for x in medicalrecords %}
+            {% if x.patient_id == patient_viewed.id %}
                 <tr class="style2">
-                    <td class="style2">{{x.id}}</td>
-                    <td class="style2">{{x.Examination_Date}}</td>
-                    <td class="style2">{{x.Diagnosis}}</td>
-                    <td class="style2">{{x.Treatment}}</td>
-                    <td class="style2">{{x.patient}}</td>
+                    <td class="style2">{{ x.id }}</td>
+                    <td class="style2">{{ x.Examination_Date }}</td>
+                    <td class="style2">{{ x.Diagnosis }}</td>
+                    <td class="style2">{{ x.Treatment }}</td>
+                    <td class="style2">{{ x.patient }}</td>
                 </tr>
             {% endif %}
-    {% endfor %}
-        
+        {% endfor %}
     </table>
+    
 
 
     {% else %}

@@ -1,7 +1,7 @@
 from django.db import models
 from admin_dash.models import Branch_Location
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from .barcode_utils import generate_ean13_barcode
 status_choices=(
     ("In Progress","In Progress"),
     ("Completed","Completed"),
@@ -10,17 +10,33 @@ status_choices=(
 
 category_choices=(
     ("Supplement","Supplement"),
-    ("Medication","Medication"), #add more later
+    ("Prescription Medication","Prescription Medication"),
+    ("OTC Medication","OTC Medication"),
+    ("Personal Care and Hygiene Products","Personal Care and Hygiene Products"),
+    ("First Aid and Medical Supplies","First Aid and Medical Supplies"),
+    ("Baby Care Products","Baby Care Products"),
+    ("Mobility Aids","Mobility Aids"),
+    ("Oral Health", "Oral Health"),
+    ("Eye and Ear Care", "Eye and Ear Care"),
+    ("Diagnostic Tests and Medical Devices","Diagnostic Tests and Medical Devices"),
+    ("Others","Others"),
 )
 
-brand_choices = (
-    ("default","default"),
-)
 
 form_choices = (
     ("Tablet","Tablet"),
+    ("Capsule","Capsule"),
     ("Liquid","Liquid"),
-    ("default","default"),
+    ("Syrup","Syrup"),
+    ("Lozenge","Lozenge"),
+    ("Topical Creams and Ointments","Topical Creams and Ointments"),
+    ("Patches","Patches"),
+    ("Inhalers and Nasal Sprays","Inhalers and Nasal Sprays"),
+    ("Powder","Powder"),
+    ("Drops","Drops"),
+    ("Injectable","Injectable"),
+    ("Effervescent Tablet","Effervescent Tablet"),
+    ("-","-"),
 )
 
 method_choices = (
@@ -28,7 +44,6 @@ method_choices = (
     ("Credit Card","Credit Card"),
     ("Debit Card","Debit Card"),
     ("Cash","Cash"),
-    ("default","default"),
 )
 
 
@@ -47,19 +62,19 @@ class Supplier(models.Model):
     
 class Product(models.Model):
     #using the built in django id as pk
-    Product_Category = models.CharField(max_length=50, choices=category_choices,default="Medication")
+    Product_Category = models.CharField(max_length=50, choices=category_choices,default="Others")
     Product_Name = models.CharField(max_length=100)
     Product_Expirydate = models.DateField(null=True)
-    Product_Barcode = models.CharField(max_length=16)
+    Product_Barcode = models.CharField(max_length=13)
     Product_Price = models.DecimalField(max_digits=1000, decimal_places=2,default = 1, validators=[ MinValueValidator(1)])
     Product_Quantity = models.IntegerField(default=1,validators=[ MinValueValidator(1)])
     Unit_Dose = models.CharField(max_length=50)
-    Brand = models.CharField(max_length=100)  # models.CharField(max_length=50, choices=brand_choices,default="default")
-    Form = models.CharField(max_length=50, choices=form_choices,default="default")
+    Brand = models.CharField(max_length=100) 
+    Form = models.CharField(max_length=50, choices=form_choices,default="-")
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
 
     def __str__(self):
-        return f'{self.Product_Name}"---"{self.Product_Expirydate}'
+        return f'{self.Product_Name}'
 
 
 class Order_Stock(models.Model):
@@ -81,11 +96,11 @@ class Sale(models.Model):
     #using the built in django id as pk
     Sale_total = models.DecimalField(max_digits=1000, decimal_places=2,default = 1, validators=[ MinValueValidator(1)])
     Sale_Date = models.DateField(null=True)
-    Sale_Method = models.CharField(max_length=50, choices=method_choices,default="default")
+    Sale_Method = models.CharField(max_length=50, choices=method_choices,default="Cash")
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
 
     def __str__(self):
-        return f'{self.id}'
+        return f'{self.Sale_Date}-{self.id}'
     
 
 class Sale_Detail(models.Model):
@@ -95,3 +110,5 @@ class Sale_Detail(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, default = "1")
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
 
+    def __str__(self):
+        return f'{self.branch}-{self.id}'

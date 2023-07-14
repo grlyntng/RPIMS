@@ -5,6 +5,7 @@ from admin_dash.models import Branch_Location
 type_choices=(
     ("Low Stock","Low Stock"),
     ("Near Expiration", "Near Expiration"),
+    ("Expired","Expired"),
     ("default","default"),
 )
 

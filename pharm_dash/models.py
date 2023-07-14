@@ -11,11 +11,11 @@ class Patient(models.Model):
     Phone = models.IntegerField(default = 1, validators=[MaxValueValidator(6000000000000), MinValueValidator(6000000000)])
     branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
     def __str__(self):
-        return self.Patient_Name
+        return f'{self.id}'
 
 class Medical_Record(models.Model):
     #using the built in django id as pk
-    Examinination_Date = models.DateField(null=True)
+    Examination_Date = models.DateField(null=True)
     Diagnosis = models.TextField(max_length=255)
     Treatment = models.TextField(max_length=255)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, default = "1")

@@ -10,22 +10,10 @@
     {% if user.role != "ADMIN" %}
     <head>
         <title>Calendar</title>
-        <style>
-            table {
-                border-collapse: collapse;
-            }
-    
-            th, td {
-                border: 1px solid black;
-                padding: 10px;
-            }
-    
-            ul {
-                margin-top: 20px;
-            }
-        </style>
     </head>
     <body>
+        <div class="calendarheader">
+        <div><h3>{{user.branch}} CALENDAR: {{ month }}/{{ year }}</h3></div>
         <div class="calendar-nav">
             <select id="year-select">
                 {% for year_choice in year_choices %}
@@ -37,12 +25,13 @@
                     <option value="{{ month_choice }}" {% if month_choice == month %}selected{% endif %}>{{ month_choice }}</option>
                 {% endfor %}
             </select>
-            <button id="change-calendar-btn">Go</button>
+            <button class="change-calendar-btn">GO</button>
+
+            <a href="{% url 'addappointment' %}" class ="addapp">NEW</a>
+       
+            
         </div>
-        <div class ="addapp">
-            <a href="{% url 'addappointment' %}">NEW</a>
         </div>
-        <h1>{{ month }}/{{ year }}</h1>
     
         <table>
             <thead>

@@ -6,24 +6,25 @@
         {% load bootstrap5 %}
         {% bootstrap_css %}
         {% bootstrap_javascript %}
-        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     {% if user.role == "ASSISTANT" %}
 
-    <body>
-        {{user.branch}}
+    <div class="addproductpage">
+        <h3>ADD NEW PRODUCT - {{user.branch}}  </h3>
         {% if submitted %}
             New Product Listed Successfully
             <br><br>
-            <a href="{% url 'inventory' %}" class="goback"> BACK TO INVENTORY </a>
+            <p><a href="{% url 'inventory' %}" class="goback"> BACK TO INVENTORY </a></p>
+            <p><a href="{% url 'addproduct' %}" class="goback"> ADD ANOTHER PRODUCT </a></p>
         {% else %}
-            <form action="" method=POST class="addsupplier">
+            <form action="" method=POST class="addnewproduct">
                 {%csrf_token%}
                 {{form.as_p}}
             
-                <input type="submit" value="PLACE NEW ORDER" valign="bottom" class="user-button">
+                <input type="submit" value="ADD NEW PRODUCT" class="addnewproductbutton">
             </form>
         {% endif %}
-        </body>
+    </div>
         
 
 

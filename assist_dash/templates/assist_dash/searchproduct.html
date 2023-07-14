@@ -17,8 +17,17 @@
                 <label for="prod_cat">CATEGORY:</label>
                 <select name="prod_cat">
                     <option value="all">ALL</option>
-                    <option value="Supplement">SUPPLEMENTS</option>
-                    <option value="Medication">MEDICINE</option>
+                    <option value="Supplement">Supplement</option>
+                    <option value="Prescription Medication">Prescription Medication</option>
+                    <option value="OTC Medication">OTC Medication</option>
+                    <option value="Personal Care and Hygiene Products">Personal Care and Hygiene Products</option>
+                    <option value="First Aid and Medical Supplies">First Aid and Medical Supplies</option>
+                    <option value="Baby Care Products">Baby Care Products</option>
+                    <option value="Mobility Aids">Mobility Aids</option>
+                    <option value="Oral Health">Oral Health</option>
+                    <option value="Eye and Ear Care">Eye and Ear Care</option>
+                    <option value="Diagnostic Tests and Medical Devices">Diagnostic Tests and Medical Devices</option>
+                    <option value="Others">Others</option>
                 </select>
                 <!--SORT-->
                 <label for="prod_columns">SORT BY:</label>
@@ -35,7 +44,7 @@
                 <input type="search" placeholder="Search Inventory"  name="searched">
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
             </form>
-            
+            <br>
         </div>
 
         
@@ -50,24 +59,22 @@
                 <th class="style2">PRICE</th>
                 <th class="style2">EXPIRY DATE</th>
                 <th class="style2">QTY</th>
-                <th class="style2">BRANCH</th>
                 <th class="style2"></th>
             </tr>
             {% for x in products %}
                 {% if x.branch == user.branch%}
-                    <tr class="style2">
-                        <td class="style2">PD{{x.id}}</td>
-                        <td class="style2">{{x.Form}}</td>
-                        <td class="style2">{{x.Unit_Dose}}</td>
-                        <td class="style2">{{x.Brand}}</td>
-                        <td class="style2">{{x.Product_Name}}</td>
-                        <td class="style2">{{x.Product_Price}}</td>
-                        <td class="style2">{{x.Product_Expirydate}}</td>
-                        <td class="style2">{{x.Product_Quantity}}</td>
-                        <td class="style2">{{x.branch}}</td>
-                        <td class="style2"> barcode button </td>
-                        
-                    </tr>
+                <tr class="style2">
+                    <td class="style2">{{forloop.counter}}</td>
+                    <td class="style2">{{x.Form}}</td>
+                    <td class="style2">{{x.Unit_Dose}}</td>
+                    <td class="style2">{{x.Brand}}</td>
+                    <td class="style2">{{x.Product_Name}}</td>
+                    <td class="style2">{{x.Product_Price}}</td>
+                    <td class="style2">{{x.Product_Expirydate}}</td>
+                    <td class="style2">{{x.Product_Quantity}}</td>
+                    <td class="style2"> <img src="/static/barcodes/{{ x.Product_Barcode }}.png" class="barcode" alt="Product Barcode"> </td>
+                    
+                </tr>
                 {% endif %}
             {% endfor %}
         </table>

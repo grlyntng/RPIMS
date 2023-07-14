@@ -10,11 +10,12 @@ class addbranchform(ModelForm):
             'Branch_Name',
             'Branch_address',
             'Branch_state',
-            #'Branch_phonenumber',idk why this won't register
+            'Branch_phonenumber'
         )
         labels = {
-            'Branch_address':'ADDRESS',
-            'Branch_state':'STATE',
+            'Branch_address':'Address',
+            'Branch_state':'State',
+            'Branch_phonenumber':'Phone',
         }
 
 class editbranchform(ModelForm):

@@ -1,0 +1,286 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+    {% if user.role == "ASSISTANT" %}
+
+    <form method="post" action="{% url 'checkout' %}">
+        {% csrf_token %}
+      
+        <div class="content">
+          <div class="picksection">
+            <div>
+              <!-- Sale items -->
+              <h3>CHECKOUT</h3>
+              <input type="text" id="search_bar" placeholder="Search for a product">
+              <select id="category_select">
+                <option value="">All Categories</option>
+                <option value="Supplement">Supplement</option>
+                <option value="Prescription Medication">Prescription Medication</option>
+                <option value="OTC Medication">OTC Medication</option>
+                <option value="Personal Care and Hygiene Products">Personal Care and Hygiene Products</option>
+                <option value="First Aid and Medical Supplies">First Aid and Medical Supplies</option>
+                <option value="Baby Care Products">Baby Care Products</option>
+                <option value="Mobility Aids">Mobility Aids</option>
+                <option value="Oral Health">Oral Health</option>
+                <option value="Eye and Ear Care">Eye and Ear Care</option>
+                <option value="Diagnostic Tests and Medical Devices">Diagnostic Tests and Medical Devices</option>
+                <option value="Others">Others</option>
+              </select>
+              <button type="button" onclick="filterProducts()">Filter</button>
+            </div>
+
+            <br>
+
+            <!-- Display filtered products -->
+            <table class="section1">
+              <tr style="font-weight: bold;">
+                <th  class="filtered1">Name</th>
+                <th  class="filtered2">Price&nbsp;&nbsp;&nbsp;</th>
+                <th  class="filtered3">Qty&nbsp;&nbsp;&nbsp;  </th>
+              </tr>
+              
+            </table>
+            <div class="section2">
+              <table id="product_list"></table>
+            </div>
+          </div>
+          <div class="salesection">
+              <!-- Selected sale items -->
+              <div class="sale_items">
+                <table id="sale_items">
+                  <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </table>
+              </div>
+              <br><br>
+              <!-- Sale details -->
+              <div class="saledetails">
+                <h3>Sale Details</h3>
+                <label for="sale_date">Sale Date:</label>
+                <input type="text" id="sale_date" name="sale_date" value="{{ current_date }}" required>
+                <br>
+                <label for="sale_method">Sale Method:</label>
+                <select id="sale_method" name="sale_method">
+                    <option value="e-Wallet">e-Wallet</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="Cash">Cash</option>
+                </select>
+                <br>
+                <label for="sale_total">Sale Total:</label>
+                <input type="text" id="sale_total" name="sale_total" value="0"> <!-- Add this line -->
+
+                <input type="submit" value="Checkout">
+              </div>
+        </div>
+    </div>  
+        
+      </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+     <script>
+  const products = [
+    {% for product in products %}
+    {
+      id: {{ product.id }},
+      name: "{{ product.Product_Name }}",
+      price: {{ product.Product_Price }},
+      category: "{{ product.Product_Category }}"
+    },
+    {% endfor %}
+  ];
+
+  const currentDate = new Date().toISOString().split('T')[0];
+  document.getElementById('sale_date').value = currentDate;
+
+  // Function to filter products based on search and category
+  function filterProducts() {
+    const searchQuery = document.getElementById('search_bar').value.toLowerCase();
+    const categoryQuery = document.getElementById('category_select').value;
+
+    const filteredProducts = products.filter(product => {
+      const nameMatch = product.name.toLowerCase().includes(searchQuery);
+      const categoryMatch = categoryQuery === '' || product.category === categoryQuery;
+      return nameMatch && categoryMatch;
+    });
+
+    displayProducts(filteredProducts);
+  }
+
+  // Function to display filtered products
+  function displayProducts(filteredProducts) {
+    const productContainer = document.getElementById('product_list');
+    productContainer.innerHTML = '';
+
+    // Get search query
+    const searchQuery = document.getElementById('search_bar').value;
+
+    filteredProducts.forEach(product => {
+      const listItem = document.createElement('tr');
+
+      const productName = document.createElement('td');
+      productName.textContent = product.name;
+
+      const productPrice = document.createElement('td');
+      productPrice.textContent = product.price;
+
+      const quantityInput = document.createElement('input');
+      quantityInput.type = 'number';
+      quantityInput.className = 'quantity-input';
+      quantityInput.name = `quantity_${product.id}`;
+      quantityInput.min = '1';
+      quantityInput.value = '1';
+
+      const addButton = document.createElement('button');
+      addButton.type = 'button';
+      addButton.textContent = '+';
+      addButton.onclick = function() {
+        addSaleItem(product, quantityInput.value);
+      };
+
+      const productIdInput = document.createElement('input');
+      productIdInput.type = 'hidden'; // Hidden input field
+      productIdInput.name = `product_${product.id}`; // Set the name dynamically
+      productIdInput.value = product.id; // Set the value to the product ID
+
+      listItem.appendChild(productName);
+      listItem.appendChild(productPrice);
+      listItem.appendChild(quantityInput);
+      listItem.appendChild(addButton);
+      listItem.appendChild(productIdInput); // Append the productIdInput field
+
+      productContainer.appendChild(listItem);
+    });
+  }
+
+  // Function to calculate the sale total
+  function calculateSaleTotal() {
+    const saleItemsTable = document.getElementById('sale_items');
+    const rows = saleItemsTable.getElementsByTagName('tr');
+    let total = 0;
+
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName('td');
+      const price = parseFloat(cells[2].textContent);
+      const quantity = parseFloat(cells[1].textContent);
+      total += price * quantity;
+    }
+
+    const saleTotalElement = document.getElementById('sale_total');
+    saleTotalElement.value = total.toFixed(2); // Set the value of sale_total input field
+
+    displaySaleTotal(total.toFixed(2)); // Display the sale total
+  }
+
+  // Function to display the sale total
+  function displaySaleTotal(total) {
+    const saleTotalDisplay = document.getElementById('sale_total_display');
+    saleTotalDisplay.textContent = total;
+  }
+
+  // Function to add a sale item
+  function addSaleItem(product, quantity) {
+    const saleItemsTable = document.getElementById('sale_items');
+    const row = document.createElement('tr');
+
+    const productCell = document.createElement('td');
+    productCell.textContent = product.name;
+    row.appendChild(productCell);
+
+    const quantityCell = document.createElement('td');
+    quantityCell.textContent = quantity;
+    row.appendChild(quantityCell);
+
+    const priceCell = document.createElement('td');
+    priceCell.textContent = product.price;
+    row.appendChild(priceCell);
+
+    const actionsCell = document.createElement('td');
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.textContent = 'Remove';
+    removeButton.onclick = function() {
+      removeSaleItem(row);
+    };
+    actionsCell.appendChild(removeButton);
+    row.appendChild(actionsCell);
+
+    saleItemsTable.appendChild(row);
+    calculateSaleTotal(); // Calculate and update the sale total
+  }
+
+  // Function to remove a sale item
+  function removeSaleItem(saleItemDiv) {
+    saleItemDiv.parentNode.removeChild(saleItemDiv);
+    calculateSaleTotal();
+  }
+
+  // Initialize the product list on page load
+  displayProducts(products);
+
+  // Submit the form with selected sale items only
+  function submitForm() {
+    const form = document.getElementById('checkoutForm');
+    const saleItemsTable = document.getElementById('sale_items');
+    const rows = saleItemsTable.getElementsByTagName('tr');
+
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i].getElementsByTagName('td');
+      const productInput = document.createElement('input');
+      productInput.type = 'hidden'; // Hidden input field
+      productInput.name = `product_${i}`; // Set the name dynamically
+      productInput.value = cells[0].textContent; // Set the value to the product name
+
+      const quantityInput = document.createElement('input');
+      quantityInput.type = 'hidden'; // Hidden input field
+      quantityInput.name = `quantity_${i}`; // Set the name dynamically
+      quantityInput.value = cells[1].textContent; // Set the value to the quantity
+
+      form.appendChild(productInput);
+      form.appendChild(quantityInput);
+    }
+
+    form.submit();
+  }
+</script>
+
+      
+      
+
+    {% else %}
+    <h1>Sorry, you must be logged in as an ASSISTANT to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

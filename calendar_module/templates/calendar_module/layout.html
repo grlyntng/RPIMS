@@ -39,7 +39,9 @@
                     <a{% if request.path == calendar %} class="active"{% endif %}
                     href="{{ calendar }}">CALENDAR</a>    
 
-                    <a href="">CHECKOUT</a>       
+                    {% url 'checkout' as checkout %}
+                    <a{% if request.path == checkout %} class="active"{% endif %}
+                    href="{{ checkout }}">CHECKOUT</a>       
                 </nav>
             {% elif user.role == "PHARMACIST" %}
                 <nav> 

@@ -10,21 +10,21 @@
         <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     {% if user.role == "PHARMACIST" %}
 
-    <body>
-        {{user.branch}}
+    <div class="addpatientpage">
+        <h3>ADD NEW PRODUCT - {{user.branch}}  </h3>
         {% if submitted %}
             New Patient Added Successfully
             <br><br>
             <a href="{% url 'patientrecords' %}" class="goback"> BACK TO PATIENT RECORDS </a>
         {% else %}
-            <form action="" method=POST class="adduser">
+            <form action="" method=POST class="addnewpatient">
                 {%csrf_token%}
                 {{form.as_p}}
             
-                <input type="submit" value="ADD NEW PATIENT" valign="bottom" class="user-button">
+                <input type="submit" value="ADD NEW PATIENT" valign="bottom" class="addnewpatientbutton">
             </form>
         {% endif %}
-    </body>
+    </div>
 
     {% else %}
     <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>

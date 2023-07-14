@@ -12,19 +12,20 @@ h1 {
 table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #d3fdfd;
 }
 
 th, td {
-    border: 1px solid #ccc;
+    border: 1px solid #bae8e8;
     padding: 10px;
 }
 
 th {
-    background-color: #f0f0f0;
+    background-color: #bae8e8;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #ecfffe;
 }
 
 td {
@@ -41,21 +42,6 @@ ul {
 
 li {
     margin-bottom: 10px;
-}
-
-.calendar-nav {
-    margin-bottom: 20px;
-}
-
-.calendar-nav select {
-    font-size: 16px;
-    padding: 5px;
-    margin-right: 10px;
-}
-
-.calendar-nav button {
-    font-size: 16px;
-    padding: 5px 10px;
 }
 
 .day-cell {
@@ -78,4 +64,53 @@ li {
 .appointment span {
     font-size: 12px;
     font-weight: bold;
+}
+
+.calendarheader{
+    display: flex;
+    align-items: center;
+  
+}
+
+div{
+    margin-right:30px;
+}
+
+.addapp{
+    background-color:  #ffd803;
+    border-radius: 5px;
+    cursor: pointer;
+    padding:10px;
+    font-weight: bold;
+    color: black;
+    font-size: small;
+    text-decoration: none;
+}
+
+.change-calendar-btn{
+    background-color:  #bae8e8;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding:10px;
+    font-weight: bold;
+    color: black;
+    font-size: small;
+    text-decoration: none;
+}
+
+.calendar-nav {
+    margin-bottom: 20px;
+    left:70%
+}
+
+.calendar-nav select {
+    font-size: 16px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.calendar-nav button {
+    font-size: 16px;
+    padding: 5px 10px;
 }

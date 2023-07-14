@@ -9,19 +9,20 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 
-    <body>
+    <div class="addbranchpage">
+        <h3>ADD NEW BRANCH </h3>
             {% if submitted %}
                 New Branch Added Successfully
                 <br><br>
                 <a href="{% url 'branches' %}" class="goback"> BACK TO BRANCHES</a>
             {% else %}
-                <form action="" method=POST class="addbranch">
+                <form action="" method=POST class="addnewbranch">
                     {%csrf_token%}
                     {{form.as_p}}
-                    <input type="submit" value="ADD NEW BRANCH" valign="bottom" class="branch-button">
+                    <input type="submit" value="ADD NEW BRANCH" class="addnewbranchbutton">
                 </form>
             {% endif %}
-    </body>
+    </div>
 
     {% else %}
     <h1>Sorry, you must be an ADMIN to view this page.</h1>

@@ -1,0 +1,83 @@
+{% extends "calendar_module/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    {% if user.is_authenticated%}
+        
+            
+            <div id="category">
+                <a href="{% url 'pharmacistnotification' %}" > NOTIFICATIONS</a>
+                <a href="{% url 'pharmacistreports' %}" class="active"> REPORTS</a> 
+            </div>
+
+
+            <div class="report">
+                <div class="report_container">
+                    <div class="report_type">
+                        
+                    <a class="tab" href="{% url 'pharmacistreports' %}">WASTE REPORTS</a>
+                    <a class="tab" href="{% url 'salesreports' %}">SALES REPORTS</a>
+                    <a class="activetab" href="{% url 'inventoryreports' %}">INVENTORY REPORTS</a>
+                    <a class="tab" href="{% url 'supplierreports' %}">SUPPLIER REPORTS</a>
+                    </div>
+                    <br>
+                    <div class="filterbar">
+                        <form method="get" action="{% url 'inventoryreports' %}">
+                            <label for="report-type">Select Report Type:</label>
+                            <select name="report_type" id="report-type">
+                                <option value="daily" {% if report_type == 'daily' %}selected{% endif %}>Daily</option>
+                                <option value="monthly" {% if report_type == 'monthly' %}selected{% endif %}>Monthly</option>
+                                <option value="annual" {% if report_type == 'annual' %}selected{% endif %}>Annual</option>
+                            </select>
+                            <button type="submit">Generate Report</button>
+                        </form>
+                    </div>
+                </div>
+
+                <br>
+                <h1>Inventory Report</h1>
+
+                    <h3>High Mobility Products</h3>
+                    <ul>
+                        {% for product in high_mobility_products %}
+                            <li>{{ product.Product_Name }}</li>
+                        {% empty %}
+                            <li>No high mobility products found.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h3>Stagnant Products</h3>
+                    <ul>
+                        {% for product in stagnant_products %}
+                            <li>{{ product.Product_Name }}</li>
+                        {% empty %}
+                            <li>No stagnant products found.</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h3>Products Nearing Expiry</h3>
+                    <ul>
+                        {% for product in products_near_expiry %}
+                            <li>{{ product.Product_Name }} - Expiry Date: {{ product.Product_Expirydate }}</li>
+                        {% empty %}
+                            <li>No products nearing expiry found.</li>
+                        {% endfor %}
+                    </ul>
+                
+            </div>
+
+            
+
+        
+
+
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

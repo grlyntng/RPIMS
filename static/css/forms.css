@@ -107,3 +107,156 @@ a.delete-btn{
     left: 70%;
     transform: translate(-50%, -50%); 
 }
+
+.addnewproduct{
+    width:60%;
+    background-color: #bae8e8;
+    padding:10px;
+    font-weight: bold;
+    border-radius: 20px;
+    
+}
+
+form.placeorder{
+    width:90%;
+    background-color: #bae8e8;
+    padding:20px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+form.addnewsupplier{
+    width:90%;
+    background-color: #bae8e8;
+    padding:20px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+form.addnewpatient{
+    width:90%;
+    background-color: #bae8e8;
+    padding:20px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+form.addnewbranch{
+    width:90%;
+    background-color: #bae8e8;
+    padding:40px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+form.addnewuser{
+    width:90%;
+    background-color: #bae8e8;
+    padding:40px;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+.addbranchpage{
+    margin-left:15%;
+}
+
+.addproductpage{
+    margin-left:25%;
+}
+.placeorderpage{
+    margin-left:15%;
+}
+.addnewsupplierpage{
+    margin-left:15%;
+}
+.addpatientpage{
+    margin-left:15%;
+}
+.adduserpage{
+    margin-left:15%;
+}
+.addnewproductbutton{
+    background-color: #ffd803;
+    border-radius: 30px;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    text-decoration: none;
+    color:black;
+    font-weight: bold; 
+    margin-left:60%;
+}
+.placeneworderbutton{
+    background-color: #ffd803;
+    border-radius: 30px;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    text-decoration: none;
+    color:black;
+    font-weight: bold; 
+    margin-left:60%;
+}
+
+.addnewsupplierbutton{
+    background-color: #ffd803;
+    border-radius: 30px;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    text-decoration: none;
+    color:black;
+    font-weight: bold; 
+    margin-left:60%;
+}
+
+.addnewpatientbutton{
+    background-color: #ffd803;
+    border-radius: 30px;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    text-decoration: none;
+    color:black;
+    font-weight: bold; 
+    margin-left:60%;
+}
+.addnewbranchbutton{
+    background-color: #ffd803;
+    border-radius: 30px;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    text-decoration: none;
+    color:black;
+    font-weight: bold; 
+    margin-left:60%;
+    margin-top: 10px;
+}
+.addnewuserbutton{
+    background-color: #ffd803;
+    border-radius: 30px;
+    width:200px;
+    height: 50px;
+    padding:5px;
+    text-decoration: none;
+    color:black;
+    font-weight: bold; 
+    margin-left:60%;
+    margin-top: 10px;
+}
+input{
+    width:50%;
+    float:right;
+}
+
+select{
+    width:50%;
+    float:right;
+}
+textarea{
+    width:50%;
+    height:30px;
+    float:right;
+}
+

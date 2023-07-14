@@ -8,10 +8,10 @@
         {% bootstrap_javascript %}
         <link rel="stylesheet" href="{% static 'css/lists.css' %}">
     {% if user.role == "ASSISTANT" %}
-
+        
         <!-- INSERT SEARCH BAR HERE-->
         <div class="topbar">
-            
+            <h1>ORDERS</h1><br>
             <form class="searchpatients"  method=POST action="{% url 'searchorder' %}">
                 {% csrf_token %}
                 <label for="status">STATUS:</label>
@@ -24,24 +24,24 @@
 
                 <label for="sortby">SORT BY:</label>
                 <select name="sortby">
-                    <option value="all">ALL</option>
                     <option value="date-asc">DATE - newest</option>
                     <option value="date-desc">DATE - oldest</option>
                 </select>
                 
                 <input type="search" placeholder="Search Orders"  name="searched">
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+                <a class="addproduct" href="{% url 'placeorder' %}">Place New Order</a>
             </form>
             
-            <a class="addmedrecord" href="{% url 'placeorder' %}">Place New Order</a>
+            
         </div>
 
-        
+        <br>
         <!-- INSERT TABLE OF ORDERS HERE-->
         <table class="style2">
             <tr style="font-weight: bold;" class="style2">
                 <th class="style2">ID</th>
-                <th class="style2">SUPPLIER ID</th>
+                <th class="style2">SUPPLIER</th>
                 <th class="style2">NAME</th>
                 <th class="style2">QTY</th>
                 <th class="style2">TOTAL $</th>
@@ -63,7 +63,9 @@
                         <td class="style2">{{x.Order_Time}}</td>
                         <td class="style2">{{x.Order_Status}}</td>
                         <td class="style2">{{x.branch}}</td>
-                        <td class="style2"> edit button </td>
+                        <td class="style2"><a href="{% url 'vieworder' x.id %}"><img src="/static/images/editstatus.png" style="width:20px;
+                            height:20px;"></a> 
+                        </td>
                         
                     </tr>
                 {% endif %}

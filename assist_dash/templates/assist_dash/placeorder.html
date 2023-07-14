@@ -6,24 +6,24 @@
         {% load bootstrap5 %}
         {% bootstrap_css %}
         {% bootstrap_javascript %}
-        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     {% if user.role == "ASSISTANT" %}
 
-    <body>
-        {{user.branch}}
+    <div class="placeorderpage">
+        <h3>PLACE NEW ORDER- {{user.branch}}  </h3>
         {% if submitted %}
             New Order Placed Successfully
             <br><br>
             <a href="{% url 'orders' %}" class="goback"> BACK TO ORDERS </a>
         {% else %}
-            <form action="" method=POST class="addsupplier">
+            <form action="" method=POST class="placeorder">
                 {%csrf_token%}
                 {{form.as_p}}
             
-                <input type="submit" value="PLACE NEW ORDER" valign="bottom" class="user-button">
+                <input type="submit" value="PLACE NEW ORDER" valign="bottom" class="placeneworderbutton">
             </form>
         {% endif %}
-    </body>
+    </div>
 
     {% else %}
     <h1>Sorry, you must be logged in as a PHARMACIST to view this page.</h1>

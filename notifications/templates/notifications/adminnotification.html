@@ -7,29 +7,38 @@
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
     {% if user.is_authenticated%}
-        
+    <div id="category">
+        <a href="{% url 'adminnotification' %}"  class="active"> NOTIFICATIONS</a>
+        <a href="{% url 'adminreports' %}" > REPORTS</a>   
+    </div>    
             
-        <div id="category">
-            <a href="{% url 'adminnotification' %}"  class="active"> NOTIFICATIONS</a>
-            <a href="{% url 'adminreports' %}"> REPORTS</a>   
-        </div>
-
-        <div>
+    <div class="noticontent">
         <table class="notif-content">
-            {% for x in notifications %}
+            {% for x in notifications reversed %} <!--reversed displays the newest-->
             <tr >
-                <td>{{x.branch}}</a> - 
+                
+                <td> 
+                    {{x.branch}} -
                     {% if x.Notification_Type == "Low Stock"%}
                     <span style="color: blue;font-weight:bold;">{{x.Notification_Type}}</span>
+                    {% elif x.Notification_Type == "Expired"%}
+                    <span style="color: red;font-weight:bold;">{{x.Notification_Type}}</span>
                     {% else %} 
-                    <span style="color: red; font-weight:bold;">{{x.Notification_Type}}</span>
+                    <span style="color: orange; font-weight:bold;">{{x.Notification_Type}}</span>
                     {% endif %}
-                    - {{x.Notification_Content}}</td>
+                    - {{x.Notification_Content}}
+                </td>
+                
             </tr>
             {% endfor %}
 
         </table>
+        <div class="insights">
+            <p class="insightcontent"><br><a style="margin-left:40%;font-weight:bold;">{{ items_sold_today }}</a><br><br><a style="margin-left:20%;">Items Sold Today</a></p>
+             <br>
+            <p class="insightcontent"><br><a  style="margin-left:40%;font-weight:bold;">{{ products_in_inventory }}</a><br><br><a>Total Products in Inventory</a></p>
         </div>
+    </div>
 
     {% else %}
         <h1>Sorry, you must be logged in to view this page.</h1>

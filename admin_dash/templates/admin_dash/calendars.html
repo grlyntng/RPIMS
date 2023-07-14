@@ -1,0 +1,95 @@
+{% extends "admin_dash/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.role == "ADMIN"%}
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+
+
+        <body>
+            <div class="calendarheader">
+                <form  method=POST action="{% url 'calendars' %}">
+                    {% csrf_token %}
+        
+                    <!-- BRANCH -->
+                    <label for="branch">BRANCH:</label>
+                    <select name="branch" id="branch">
+                        <option value="all">All Branches</option>
+                        {% for x in mybranches %}
+                            <option value="{{x.Branch_Name }}">{{ x.Branch_Name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>&nbsp;&nbsp;&nbsp;
+            <div><h3> CALENDAR: {{ month }}/{{ year }}</h3></div>
+            <div class="calendar-nav">
+                <select id="year-select">
+                    {% for year_choice in year_choices %}
+                        <option value="{{ year_choice }}" {% if year_choice == year %}selected{% endif %}>{{ year_choice }}</option>
+                    {% endfor %}
+                </select>
+                <select id="month-select">
+                    {% for month_choice in month_choices %}
+                        <option value="{{ month_choice }}" {% if month_choice == month %}selected{% endif %}>{{ month_choice }}</option>
+                    {% endfor %}
+                </select>
+                <button id="change-calendar-btn" class ="change-calendar-btn">GO</button>
+
+            </div>
+            </div>
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for day in num_days %}
+                            {% if forloop.counter0|divisibleby:7 %}
+                                </tr><tr>
+                            {% endif %}
+                            <td>
+                                <b>{{ day }}</b> <br>
+                                {% for appointment in appointments %}
+                                    {% if appointment.date.day == day %}
+                                        <li>{{ appointment.app_detail }} @ {{appointment.time_start}}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        
+        
+        </body>
+        <script>
+            document.getElementById("change-calendar-btn").addEventListener("click", function() {
+                var year = document.getElementById("year-select").value;
+                var month = document.getElementById("month-select").value;
+                var branch = document.getElementById("branch").value;
+                window.location.href = "/calendars/" + year + "/" + month + "/?branch=" + branch;
+            });
+        </script>
+    
+    {% else %}
+    <h1>Sorry, you must be an ADMIN to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

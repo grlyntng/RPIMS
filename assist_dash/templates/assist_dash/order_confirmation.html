@@ -1,0 +1,30 @@
+{% extends "calendar_module/layout.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        {% load static %}
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% if user.role == "ASSISTANT" %}
+
+  
+    <h2>Checkout Confirmation</h2>
+    <p>Checkout Successful! Here are the details:</p>
+
+    <p>Sale ID: {{ sale.id }}</p>
+    <p>Sale Total: {{ sale.Sale_total }}</p>
+    <p>Sale Date: {{ sale.Sale_Date }}</p>
+    <p>Sale Method: {{ sale.Sale_Method }}</p>
+
+    {% else %}
+    <h1>Sorry, you must be logged in as an ASSISTANT to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+
+{% else %}
+    <h1>Sorry, you must be logged in to view this page.</h1>
+    <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+{% endif %}
+{% endblock %}

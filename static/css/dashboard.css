@@ -10,17 +10,12 @@
     font-weight: bolder;
 }
 
-#notifications{
-    float:right;
-    margin-left: 50px;
-    width:70%;
-    font-family: Arial, Helvetica, sans-serif;
-    border-radius: 10px;
-}
 
 .notif-content{
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
+    float: left;
+    margin-left:30px;
 }
 
 th, td {
@@ -32,33 +27,6 @@ th, td {
 .dash{
     display:flex;
     flex-direction: row;
-}
-
-#dash-stats{
-    float:right;
-    width:40%;
-    padding-left: 10px;
-}
-
-.divsplay{
-    width: 200px;
-    height:80px;
-    border-radius: 10px;
-    border:1px solid #8de3e3;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-#stat{
-    color:#4db4b4;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: BOLD;
-    font-size: 20px;
-}
-
-#tag{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10px;
 }
 
 .notifbutton {
@@ -97,3 +65,67 @@ a{
 }
 
 
+div.report{
+    float: left;
+    margin-left:30px;
+    size:auto;
+}
+
+div.report_type{
+    
+}
+
+.tab {
+    display: inline-block;
+    padding: 10px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    cursor: pointer;
+}
+
+.activetab {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.report_container {
+    display: flex;
+    align-items: center;
+}
+  
+.report_type {
+    flex: 2;
+}
+  
+.filterbar {
+    margin-left: 30px;
+    text-align: right;
+}
+
+.download-button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.insights{
+    margin-left:10px;
+}
+
+p.insightcontent{
+    border-radius: 5px;
+    background-color: #bae8e8;
+}
+
+div.noticontent{
+    display:flex;
+    flex-direction: row;
+  }

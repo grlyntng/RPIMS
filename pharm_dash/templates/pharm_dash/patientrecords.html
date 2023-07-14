@@ -14,9 +14,10 @@
             <form class="searchpatients"  method=POST action="{% url 'searchpatient' %}">
                 {% csrf_token %}
                 <input type="search" placeholder="Search Patients"  name="searched">
-                <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+                <input type="submit" value="ENTER" valign="bottom" >
+                <a  href="{% url 'addpatient' %}" class="addpatientbutton">Add New Patient</a>
             </form>
-            <a class="addmedrecord" href="{% url 'addpatient' %}">Add New Patient</a>
+            <br>
         </div>
         
 

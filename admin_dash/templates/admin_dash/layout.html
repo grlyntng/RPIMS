@@ -30,8 +30,13 @@
                 <a{% if request.path == roles %} class="active"{% endif %}
                 href="{{ roles }}">ROLES</a> 
 
-                <a href="">INVENTORIES</a>
-                <a href="">CALENDARS</a>          
+                {% url 'inventories' as inventories %}
+                <a{% if request.path == inventories %} class="active"{% endif %}
+                href="{{ inventories }}">INVENTORIES</a> 
+                
+                {% url 'calendars' as calendars %}
+                <a{% if request.path == calendars %} class="active"{% endif %}
+                href="{{ calendars }}">CALENDARS</a>           
             </nav>
             
             <div class="user-dropdown">

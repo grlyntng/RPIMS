@@ -8,20 +8,100 @@
 
     {% if user.is_authenticated%}
         
-    <body>
             <div id="category">
                 <a href="{% url 'adminnotification' %}"> NOTIFICATIONS</a>
-                <a href="{% url 'adminreports' %}" > REPORTS</a>   
+                <a href="{% url 'adminreports' %}"  class="active"> REPORTS</a>   
+            </div>
+
+            <div class="report">
+                <div class="report_container">
+                    <div class="report_type">
+                    
+                    <div class="filterbar">
+                        <form method="get" action="{% url 'adminreports' %}">
+                            {% csrf_token %}
+                            <!-- BRANCH -->
+                            <label for="branch">BRANCH:</label>
+                            <select name="branch" id="branch">
+                                <option value="all">All Branches</option>
+                                {% for x in mybranches %}
+                                    <option value="{{x.Branch_Name }}">{{ x.Branch_Name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="report-type">Select Report Type:</label>
+                            <select name="report_type" id="report-type">
+                                <option value="daily" {% if report_type == 'daily' %}selected{% endif %}>Daily</option>
+                                <option value="monthly" {% if report_type == 'monthly' %}selected{% endif %}>Monthly</option>
+                                <option value="annual" {% if report_type == 'annual' %}selected{% endif %}>Annual</option>
+                            </select>
+                            <button type="submit">Generate Report</button>
+                        </form>
+                        <br>
+                    </div>
+                    <a class="activetab" href="{% url 'adminreports' %}">WASTE REPORTS</a>
+                    <a class="tab" href="{% url 'salesreports' %}">SALES REPORTS</a>
+                    <a class="tab" href="{% url 'inventoryreports' %}">INVENTORY REPORTS</a>
+                    <a class="tab" href="{% url 'supplierreports' %}">SUPPLIER REPORTS</a>
+                    </div>
+                    <br>
+                </div>
+
+                <br>
+                <div id="report-content">
+                    <h1>Waste Report</h1>
+                    <p>Total Wasted Inventory Value: ${{ wasted_inventory_value }}</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity Wasted</th>
+                                <th>Expiry Date</th>
+                                <th>Monetary Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in waste_report %}
+                            <tr>
+                                <td>{{ item.Product_Name }}</td>
+                                <td>{{ item.Product_Quantity }}</td>
+                                <td>{{ item.Product_Expirydate }}</td>
+                                <td>${{ item.Monetary_Value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <button class="download-button" onclick="generatePdf()">Download as PDF</button>
+
             </div>
 
 
-            <div id="SALES-REPORTS">
-                {{output}}
-            </div>
-        
 
+        <script>
+            function generatePdf() {
+                // Get the report content
+                const reportContent = document.getElementById('report-content').innerHTML;
+    
+                // Define the document definition for pdfmake
+                const docDefinition = {
+                    content: [
+                        { text: 'Waste Report', style: 'header' },
+                        { text: reportContent, style: 'content' }
+                    ],
+                    styles: {
+                        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+                        content: { fontSize: 12 }
+                    }
+                };
+    
+                // Generate the PDF
+                pdfMake.createPdf(docDefinition).download('waste_report.pdf');
 
-    <body>
+                
+            }
+        </script>
 
 
     {% else %}

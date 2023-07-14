@@ -11,6 +11,8 @@ def check_notifications():
     # Retrieve all products with expiration date within 30 days from now
     expiration_date_threshold = datetime.utcnow().replace(tzinfo=utc) + timedelta(days=30)
     expiring_products = Product.objects.filter(Product_Expirydate__lte=expiration_date_threshold)
+    expired_products = Product.objects.filter(Product_Expirydate__lte=datetime.utcnow().replace(tzinfo=utc))
+
 
     # Generate notifications for low stock products
     for product in low_stock_products:
@@ -36,6 +38,20 @@ def check_notifications():
             continue  # Skip creating duplicate notification
         notification = Notification(
             Notification_Type='Near Expiration',
+            Notification_Content=notification_content,
+            branch=product.branch
+        )
+        notification.save()
+
+    # Generate notifications for expired products
+    for product in expired_products:
+        notification_content = f"The product {product.Product_Name} has expired on {product.Product_Expirydate}."
+        # Check if a notification with the same content already exists
+        existing_notification = Notification.objects.filter(Notification_Content=notification_content).first()
+        if existing_notification:
+            continue  # Skip creating duplicate notification
+        notification = Notification(
+            Notification_Type='Expired',
             Notification_Content=notification_content,
             branch=product.branch
         )

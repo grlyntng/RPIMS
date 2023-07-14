@@ -11,19 +11,20 @@
 
         <!-- INSERT SEARCH BAR HERE-->
         <div class="topbar">
+            <h1>SUPPLIERS</h1>
             <form class="searchpatients"  method=POST action="{% url 'searchsupplier' %}">
                 {% csrf_token %}
                 <input type="search" placeholder="Search Suppliers"  name="searched">
                 <input type="submit" value="ENTER" valign="bottom" class="branch-button">
+                <a class="addsupplierbutton" href="{% url 'addsupplier' %}">Add New Supplier</a>
             </form>
-            <a class="addmedrecord" href="{% url 'addsupplier' %}">Add New Supplier</a>
+            <br>
         </div>
 
         
         <!-- INSERT TABLE OF SUPPLIERS HERE-->
         <table class="style2">
             <tr style="font-weight: bold;" class="style2">
-                <th class="style2">ID</th>
                 <th class="style2">SUPPLIER NAME</th>
                 <th class="style2">RATING</th>
                 <th class="style2">PHONE</th>
@@ -34,7 +35,6 @@
             {% for x in mysuppliers %}
                 {% if x.branch == user.branch%}
                     <tr class="style2">
-                        <td class="style2">SUP{{x.id}}</td>
                         <td class="style2"><a href="{% url 'editsupplier' x.id %}">{{x.Supplier_Name}}</a></td>
                         <td class="style2">{{x.Supplier_Rating}}</td>
                         <td class="style2">{{x.Supplier_Phone}}</td>
