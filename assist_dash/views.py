@@ -6,65 +6,76 @@ from .forms import addsupplierform, editsupplierform, placeorderform, addproduct
 from calendar_module.models import Appointment
 
 from django.db.models import Q
-
+from django.db.models import F
 def assistdash(request):
     return render(request, 'assist_dash/assistdash.html')
 
 def order_confirmation(request, sale_id):
     sale = Sale.objects.get(id=sale_id)
-    return render(request, 'assist_dash/order_confirmation.html', {'sale': sale})
+    sale_details = sale.sale_details.all()
+    allsaledeets = Sale_Detail.objects.all()
+    return render(request, 'assist_dash/order_confirmation.html', {'sale': sale, 'sale_details': sale_details, 'allsaledeets':allsaledeets})
 
+from django.shortcuts import render, redirect
+from .models import Product, Sale, Sale_Detail
+from datetime import date
 def checkout(request):
     if request.method == 'POST':
-         # Process form data
-        sale_date = request.POST['sale_date']
+        sale_date = date.today().isoformat()
         sale_method = request.POST['sale_method']
-        
-        # Retrieve the selected products and quantities
+
         selected_products = []
         for key, value in request.POST.items():
             if key.startswith('quantity_'):
                 product_id = key.split('_')[1]
-                quantity = int(value)
-                selected_products.append({'product_id': product_id, 'quantity': quantity})
-        
-        # Calculate sale total and quantity
-        sale_total = 0
-        quantity = 0
-        for item in selected_products:
-            product = Product.objects.get(id=item['product_id'])
-            item_total = product.Product_Price * item['quantity']
-            sale_total += item_total
-            quantity += item['quantity']
-        
-        # Retrieve the selected product
-        product = Product.objects.get(id=product_id)
-        
+                try:
+                    product = Product.objects.get(id=product_id)
+                    quantity = int(value)
+                    price = product.Product_Price
+
+                    if quantity > 0:
+                        selected_products.append({
+                            'product': product,
+                            'quantity': quantity,
+                            'price': price
+                        })
+
+                except Product.DoesNotExist:
+                    pass  # Handle the case where the product doesn't exist or handle the error as per your requirements
+
+        # Calculate sale total
+        sale_total = sum(item['quantity'] * item['price'] for item in selected_products)
+
         # Create sale
         sale = Sale.objects.create(
             Sale_total=sale_total,
             Sale_Date=sale_date,
             Sale_Method=sale_method,
-            branch = request.user.branch,
+            branch=request.user.branch,
         )
-        
-       # Create sale details for the selected products
+
+        # Create sale details for the selected products
         for item in selected_products:
-            product = Product.objects.get(id=item['product_id'])
+            product = item['product']
+            quantity = item['quantity']
+            price = item['price']
             Sale_Detail.objects.create(
-                Item_Quantity=item['quantity'],
+                Item_Quantity=quantity,
                 product=product,
                 sale=sale,
-                branch = request.user.branch,
+                branch=request.user.branch,
             )
-        
+            # Deduct the sold quantity from the product quantity in inventory
+            Product.objects.filter(id=product.id).update(Product_Quantity=F('Product_Quantity') - quantity)
+
         # Redirect to order confirmation page
         return redirect('order_confirmation', sale_id=sale.id)
-    
+
     # If GET request or form is invalid, render the checkout template
     products = Product.objects.all()
-    return render(request, 'assist_dash/checkout.html', {'products': products})            
-  
+    return render(request, 'assist_dash/checkout.html', {'products': products})
+
+
 
 def suppliers(request):
     mysuppliers = Supplier.objects.all()
@@ -83,11 +94,13 @@ def searchsupplier(request):
         return render(request, 'assist_dash/searchsupplier.html', {'searched': searched, 'mysuppliers': mysuppliers})
     else:
         return render(request, 'assist_dash/searchsupplier.html')
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def addsupplier(request):
         submitted = False
         if request.method == "POST":
-            form5 = addsupplierform(request.POST)
+            form5 = addproductform(user=request.user, data=request.POST)
             if form5.is_valid():
                 form5.save()
                 return HttpResponseRedirect('/addsupplier?submitted=True')

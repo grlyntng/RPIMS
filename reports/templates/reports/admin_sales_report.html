@@ -1,0 +1,186 @@
+{% extends "admin_dash/layout.html" %}
+{% block content %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% if user.is_authenticated%}
+        
+            <div id="category">
+                <a href="{% url 'adminnotification' %}"> NOTIFICATIONS</a>
+                <a href="{% url 'adminreports' %}"  class="active"> REPORTS</a>   
+            </div>
+
+            <div class="report">
+                <div class="report_container">
+                    <div class="report_type">
+                    
+                        <div class="filterbar">
+                            <form method="get" action="{% url 'adminsalesreports' %}">
+                                <label for="branch">BRANCH:</label>
+                                <select name="branch" id="branch">
+                                    <option value="all">All Branches</option>
+                                    {% for x in mybranches %}
+                                        <option value="{{ x.Branch_Name }}" {% if branch == x.Branch_Name %}selected{% endif %}>{{ x.Branch_Name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="report-type">Select Report Type:</label>
+                                <select name="report_type" id="report-type">
+                                    <option value="daily" {% if report_type == 'daily' %}selected{% endif %}>Daily</option>
+                                    <option value="monthly" {% if report_type == 'monthly' %}selected{% endif %}>Monthly</option>
+                                    <option value="annual" {% if report_type == 'annual' %}selected{% endif %}>Annual</option>
+                                </select>
+                                <button type="submit">Generate Report</button>
+                            </form>
+                        </div>
+                    <a class="tab" href="{% url 'adminreports' %}">WASTE REPORTS</a>
+                    <a class="activetab" href="{% url 'adminsalesreports' %}">SALES REPORTS</a>
+                    <a class="tab" href="{% url 'admininventoryreports' %}">INVENTORY REPORTS</a>
+                    <a class="tab" href="{% url 'adminsupplierreports' %}">SUPPLIER REPORTS</a>
+                    </div>
+                    <br>
+                    
+                </div>
+
+                <br><br>
+                <h1>Sale Report</h1>
+                <h3>Date Range: {{ date_range }}</h3>
+    
+                <h2>Number of Sales:</h2>
+                <p>{{ num_sales }}</p>
+    
+                <h2>Top 5 Most Popular Items Sold:</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th>Quantity Sold</th>
+                            <th>Sales Generated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in top_items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ item.product__Product_Name }}</td>
+                                <td>{{ item.quantity_sold }}</td>
+                                <td>RM{{ item.sales_generated }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                    
+    
+                <h2>Total Sales Value:</h2>
+                <p>RM{{ total_sales_value }}</p>
+    
+                <h2>LSTM Sales Predictions:</h2>
+                <ul>
+                    {% for prediction in lstm_predictions %}
+                        <li>{{ prediction }}</li>
+                    {% endfor %}
+                </ul>
+    
+                <h2>Stock Replenishment Recommendations:</h2>
+                <ul>
+                    {% for item in stock_replenishment %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+    
+                <h2>Seasonal Trends by Category:</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Quantity Sold</th>
+                            <th>Sales Generated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in seasonal_trends %}
+                            <tr>
+                                <td>{{ category.product__Product_Category }}</td>
+                                <td>{{ category.quantity_sold }}</td>
+                                <td>RM{{ category.sales_generated }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+    
+    
+                <div class="chart-container">
+                    <canvas id="lstmChart"></canvas>
+                </div>
+    
+                <!-- Display evaluation metrics -->
+                <h3>Evaluation Metrics:</h3>
+                <p>Mean Absolute Error (MAE): {{ mae }}</p>
+                <p>Root Mean Squared Error (RMSE): {{ rmse }}</p>
+                <p>Mean Absolute Percentage Error (MAPE): {{ mape }}%</p>
+    
+                <script>
+                    var lstmPredictions = {{ lstm_predictions|safe }};
+                    
+                    var ctx = document.getElementById('lstmChart').getContext('2d');
+                    var lstmChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: Array.from({ length: lstmPredictions.length }, (_, i) => i + 1),
+                            datasets: [{
+                                label: 'LSTM Sales Predictions',
+                                data: lstmPredictions,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1,
+                                pointRadius: 3,
+                                pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                                pointBorderColor: 'rgba(255, 255, 255, 1)',
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)',
+                                pointHoverBorderColor: 'rgba(255, 255, 255, 1)',
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Time'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Sales Predictions'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return 'Prediction: ' + context.raw.y.toFixed(2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                </script>
+                
+                
+            </div>
+
+
+
+    {% else %}
+        <h1>Sorry, you must be logged in to view this page.</h1>
+        <a href="{% url 'login_user' %}"> LOG IN NOW</a>
+    {% endif %}
+{% endblock %}

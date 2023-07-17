@@ -2,14 +2,13 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-        {% load static %}
-        {% load bootstrap5 %}
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
-        <link rel="stylesheet" href="{% static 'css/lists.css' %}">
+    {% load static %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="{% static 'css/lists.css' %}">
     {% if user.role == "ASSISTANT" %}
 
-  
     <h2>Checkout Confirmation</h2>
     <p>Checkout Successful! Here are the details:</p>
 
@@ -17,6 +16,26 @@
     <p>Sale Total: {{ sale.Sale_total }}</p>
     <p>Sale Date: {{ sale.Sale_Date }}</p>
     <p>Sale Method: {{ sale.Sale_Method }}</p>
+
+    <h3>Sale Details</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item Quantity</th>
+                <th>Product</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for x in allsaledeets %}
+                {% if x.sale == sale%}
+                <tr>
+                    <td>{{ x.Item_Quantity }}</td>
+                    <td>{{ x.product }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
 
     {% else %}
     <h1>Sorry, you must be logged in as an ASSISTANT to view this page.</h1>

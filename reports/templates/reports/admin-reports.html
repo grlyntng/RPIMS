@@ -6,17 +6,15 @@
 {% bootstrap_javascript %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 
-    {% if user.is_authenticated%}
-        
-            <div id="category">
-                <a href="{% url 'adminnotification' %}"> NOTIFICATIONS</a>
-                <a href="{% url 'adminreports' %}"  class="active"> REPORTS</a>   
-            </div>
+    {% if user.is_authenticated %}
+        <div id="category">
+            <a href="{% url 'adminnotification' %}"> NOTIFICATIONS</a>
+            <a href="{% url 'adminreports' %}" class="active"> REPORTS</a>   
+        </div>
 
-            <div class="report">
-                <div class="report_container">
-                    <div class="report_type">
-                    
+        <div class="report">
+            <div class="report_container">
+                <div class="report_type">
                     <div class="filterbar">
                         <form method="get" action="{% url 'adminreports' %}">
                             {% csrf_token %}
@@ -24,8 +22,9 @@
                             <label for="branch">BRANCH:</label>
                             <select name="branch" id="branch">
                                 <option value="all">All Branches</option>
-                                {% for x in mybranches %}
-                                    <option value="{{x.Branch_Name }}">{{ x.Branch_Name }}</option>
+                                {% for branch in mybranches %}
+                                <option value="{{ branch.Branch_Name }}" {% if branch.Branch_Name == branch_selected %}selected{% endif %}>{{ branch.Branch_Name }}</option>
+
                                 {% endfor %}
                             </select>
                             <label for="report-type">Select Report Type:</label>
@@ -39,51 +38,47 @@
                         <br>
                     </div>
                     <a class="activetab" href="{% url 'adminreports' %}">WASTE REPORTS</a>
-                    <a class="tab" href="{% url 'salesreports' %}">SALES REPORTS</a>
-                    <a class="tab" href="{% url 'inventoryreports' %}">INVENTORY REPORTS</a>
-                    <a class="tab" href="{% url 'supplierreports' %}">SUPPLIER REPORTS</a>
-                    </div>
-                    <br>
-                </div>
-
-                <br>
-                <div id="report-content">
-                    <h1>Waste Report</h1>
-                    <p>Total Wasted Inventory Value: ${{ wasted_inventory_value }}</p>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Quantity Wasted</th>
-                                <th>Expiry Date</th>
-                                <th>Monetary Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in waste_report %}
-                            <tr>
-                                <td>{{ item.Product_Name }}</td>
-                                <td>{{ item.Product_Quantity }}</td>
-                                <td>{{ item.Product_Expirydate }}</td>
-                                <td>${{ item.Monetary_Value }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <a class="tab" href="{% url 'adminsalesreports' %}">SALES REPORTS</a>
+                    <a class="tab" href="{% url 'admininventoryreports' %}">INVENTORY REPORTS</a>
+                    <a class="tab" href="{% url 'adminsupplierreports' %}">SUPPLIER REPORTS</a>
                 </div>
                 <br>
-                <button class="download-button" onclick="generatePdf()">Download as PDF</button>
-
             </div>
+            <br>
+            <div id="report-content">
+                <h1>Waste Report</h1>
+                <p>Total Wasted Inventory Value: ${{ wasted_inventory_value }}</p>
 
-
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity Wasted</th>
+                            <th>Expiry Date</th>
+                            <th>Monetary Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in waste_report %}
+                        <tr>
+                            <td>{{ item.Product_Name }}</td>
+                            <td>{{ item.Product_Quantity }}</td>
+                            <td>{{ item.Product_Expirydate }}</td>
+                            <td>${{ item.Monetary_Value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <button class="download-button" onclick="generatePdf()">Download as PDF</button>
+        </div>
 
         <script>
             function generatePdf() {
                 // Get the report content
                 const reportContent = document.getElementById('report-content').innerHTML;
-    
+
                 // Define the document definition for pdfmake
                 const docDefinition = {
                     content: [
@@ -95,15 +90,11 @@
                         content: { fontSize: 12 }
                     }
                 };
-    
+
                 // Generate the PDF
                 pdfMake.createPdf(docDefinition).download('waste_report.pdf');
-
-                
             }
         </script>
-
-
     {% else %}
         <h1>Sorry, you must be logged in to view this page.</h1>
         <a href="{% url 'login_user' %}"> LOG IN NOW</a>

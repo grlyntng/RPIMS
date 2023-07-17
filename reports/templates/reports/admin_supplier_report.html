@@ -1,4 +1,4 @@
-{% extends "calendar_module/layout.html" %}
+{% extends "admin_dash/layout.html" %}
 {% block content %}
 {% load static %}
 {% load bootstrap5 %}
@@ -8,25 +8,27 @@
 
     {% if user.is_authenticated%}
         
-            
             <div id="category">
-                <a href="{% url 'pharmacistnotification' %}" > NOTIFICATIONS</a>
-                <a href="{% url 'pharmacistreports' %}" class="active"> REPORTS</a> 
+                <a href="{% url 'adminnotification' %}"> NOTIFICATIONS</a>
+                <a href="{% url 'adminreports' %}"  class="active"> REPORTS</a>   
             </div>
-
 
             <div class="report">
                 <div class="report_container">
                     <div class="report_type">
-                        
-                    <a class="tab" href="{% url 'pharmacistreports' %}">WASTE REPORTS</a>
-                    <a class="tab" href="{% url 'salesreports' %}">SALES REPORTS</a>
-                    <a class="tab" href="{% url 'inventoryreports' %}">INVENTORY REPORTS</a>
-                    <a class="activetab" href="{% url 'supplierreports' %}">SUPPLIER REPORTS</a>
-                    </div>
-                    <br>
+                    
                     <div class="filterbar">
-                        <form method="get" action="{% url 'supplierreports' %}">
+                        <form method="get" action="{% url 'adminsupplierreports' %}">
+                            {% csrf_token %}
+                            <!-- BRANCH -->
+                            <label for="branch">BRANCH:</label>
+                            <select name="branch" id="branch">
+                                <option value="all">All Branches</option>
+                                {% for branch in mybranches %}
+                                    <option value="{{ branch.Branch_Name }}" {% if branch.Branch_Name == branch_selected %}selected{% endif %}>{{ branch.Branch_Name }}</option>
+
+                                {% endfor %}
+                            </select>
                             <label for="report-type">Select Report Type:</label>
                             <select name="report_type" id="report-type">
                                 <option value="daily" {% if report_type == 'daily' %}selected{% endif %}>Daily</option>
@@ -35,7 +37,14 @@
                             </select>
                             <button type="submit">Generate Report</button>
                         </form>
+                        <br>
                     </div>
+                    <a class="tab" href="{% url 'adminreports' %}">WASTE REPORTS</a>
+                    <a class="tab" href="{% url 'adminsalesreports' %}">SALES REPORTS</a>
+                    <a class="tab" href="{% url 'admininventoryreports' %}">INVENTORY REPORTS</a>
+                    <a class="activetab" href="{% url 'adminsupplierreports' %}">SUPPLIER REPORTS</a>
+                    </div>
+                    <br>
                 </div>
 
                 <br>
@@ -84,15 +93,9 @@
                     <h2>Number of Cancellations</h2>
                     <p>Total Cancellations: {{ total_cancellations }}</p>
 
-
-
-                    
+                
                 
             </div>
-
-            
-
-        
 
 
 

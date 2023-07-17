@@ -17,7 +17,7 @@ def check_notifications():
     # Generate notifications for low stock products
     for product in low_stock_products:
         
-        notification_content = f"The stock quantity for {product.Product_Name} is low ({product.Product_Quantity})."
+        notification_content = f"The stock quantity for {product.Product_Name} is low ({product.Product_Quantity} units left)."
         # Check if a notification with the same content already exists
         existing_notification = Notification.objects.filter(Notification_Content=notification_content).first()
         if existing_notification:

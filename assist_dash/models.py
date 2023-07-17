@@ -104,11 +104,11 @@ class Sale(models.Model):
     
 
 class Sale_Detail(models.Model):
-    #using the built in django id as pk
+    # using the built-in Django id as pk
     Item_Quantity = models.IntegerField(default=1)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, default = "1")
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, default = "1")
-    branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default = "1")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default="1", related_name='sale_details')
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, default="1", related_name='sale_details')
+    branch = models.ForeignKey(Branch_Location, on_delete=models.CASCADE, default="1")
 
     def __str__(self):
         return f'{self.branch}-{self.id}'

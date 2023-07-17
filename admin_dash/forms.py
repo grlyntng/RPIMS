@@ -28,9 +28,10 @@ class editbranchform(ModelForm):
     class Meta:
         model = Branch_Location
         fields = (
-            #phone num,
+            'Branch_phonenumber',
             'Branch_address',
         )
         labels = {
+            'Branch_phonenumber':'PHONE',
             'Branch_address':'ADDRESS',
         }
